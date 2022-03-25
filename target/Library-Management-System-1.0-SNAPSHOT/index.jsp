@@ -41,6 +41,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="view-borrow">View Issued Books</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="logout">Logout</a>
+                </li>
             </ul>
         </div>
     </div>
@@ -54,47 +57,6 @@
             </div>
         </div>
     </div>
-<%--            <div class="col-md-8">--%>
-<%--                <table class="table table-striped">--%>
-<%--                    <thead>--%>
-<%--                    <tr>--%>
-<%--                        <th>#</th>--%>
-<%--                        <th>Book Title</th>--%>
-<%--                        <th>Author Name</th>--%>
-<%--                        <th>Category</th>--%>
-<%--                        <th>Stock</th>--%>
-<%--                        <th>Published Year</th>--%>
-<%--                    </tr>--%>
-<%--                    </thead>--%>
-<%--                    <tbody>--%>
-<%--                    <%--%>
-<%--                        RequestDispatcher dispatcher = request.getRequestDispatcher("/view-books");--%>
-<%--                        dispatcher.include(request,response);--%>
-<%--                        List<Book> allBook = (ArrayList<Book>)request.getAttribute("allBook");--%>
-<%--                        for(Book book:allBook){--%>
-
-<%--                    %>--%>
-<%--                    <tr>--%>
-<%--                        <td><%= book.getBook_Id() %></td>--%>
-<%--                        <td><%= book.getBook_Title() %></td>--%>
-<%--                        <td><%= book.getAuthor_Name() %></td>--%>
-<%--                        <td><%= book.category_name %></td>--%>
-<%--                        <td><%= book.getNos_Available() %></td>--%>
-<%--                        <td><%= book.getPublished_year() %></td>--%>
-<%--                    </tr>--%>
-<%--                    <% } %>--%>
-<%--                    </tbody>--%>
-<%--                </table>--%>
-<%--            </div>--%>
-
-<%--            --%>
-<%--        </div>--%>
-<%--    </div>--%>
-<%--<% } else {--%>
-<%--    RequestDispatcher dispatcher = request.getRequestDispatcher("login.html");--%>
-<%--    dispatcher.forward(request, response);--%>
-<%--}--%>
-<%--%>--%>
 
 </body>
 </html>
