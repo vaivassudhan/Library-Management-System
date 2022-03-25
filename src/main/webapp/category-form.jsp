@@ -14,6 +14,7 @@
 <body>
 <%--Check if user is logged in --%>
 <%
+    System.out.println("CATEGORY FORM " + session.getAttribute("Librarian_Id"));
     if(session.getAttribute("Librarian_Id") == null){
         RequestDispatcher dispatcher = request.getRequestDispatcher("login.html");
         dispatcher.forward(request,response);

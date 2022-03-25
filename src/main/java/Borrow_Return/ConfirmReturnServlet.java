@@ -8,7 +8,7 @@ import java.io.PrintWriter;
 public class ConfirmReturnServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if(request.getSession(false) == null){
+        if(request.getSession(false).getAttribute("Librarian_Id") == null){
             RequestDispatcher dispatcher = request.getRequestDispatcher("login.html");
             dispatcher.forward(request,response);
         }

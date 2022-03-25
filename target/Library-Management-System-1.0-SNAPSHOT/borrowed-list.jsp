@@ -16,6 +16,13 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 <body>
+<%--Check if user is logged in --%>
+<%--<%--%>
+<%--    if(session.getAttribute("Librarian_Id") == null){--%>
+<%--        RequestDispatcher dispatcher = request.getRequestDispatcher("login.html");--%>
+<%--        dispatcher.forward(request,response);--%>
+<%--    }--%>
+<%--%>--%>
 <nav class="navbar navbar-dark bg-primary navbar-expand-lg ">
     <div class="container-fluid">
         <a class="navbar-brand" href="index.jsp">LMS - Zoho</a>

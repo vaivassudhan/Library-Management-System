@@ -14,7 +14,7 @@ public class AddBorrowServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(false);
-        if(session == null){
+        if(session.getAttribute("Librarian_Id") == null){
             RequestDispatcher dispatcher = request.getRequestDispatcher("login.html");
             dispatcher.forward(request,response);
         }

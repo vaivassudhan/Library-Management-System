@@ -8,10 +8,11 @@ import java.util.List;
 public class ViewBorrowServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if(request.getSession(false) == null){
-            RequestDispatcher dispatcher = request.getRequestDispatcher("login.html");
-            dispatcher.forward(request,response);
-        }
+//        if(request.getSession(false).getAttribute("Librarian_Id") == null){
+//            RequestDispatcher dispatcher = request.getRequestDispatcher("login.html");
+//            dispatcher.forward(request,response);
+//        }
+        System.out.println(request.getSession(false).getAttribute("Librarian_Id"));
         List<Borrow> allBorrow = BorrowDao.getAllBorrow();
         List<Borrow> allReturn = BorrowDao.getAllReturned();
 

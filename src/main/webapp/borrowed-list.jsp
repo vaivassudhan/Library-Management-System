@@ -17,12 +17,12 @@
 </head>
 <body>
 <%--Check if user is logged in --%>
-<%
-    if(session.getAttribute("Librarian_Id") == null){
-        RequestDispatcher dispatcher = request.getRequestDispatcher("login.html");
-        dispatcher.forward(request,response);
-    }
-%>
+<%--<%--%>
+<%--    if(session.getAttribute("Librarian_Id") == null){--%>
+<%--        RequestDispatcher dispatcher = request.getRequestDispatcher("login.html");--%>
+<%--        dispatcher.forward(request,response);--%>
+<%--    }--%>
+<%--%>--%>
 <nav class="navbar navbar-dark bg-primary navbar-expand-lg ">
     <div class="container-fluid">
         <a class="navbar-brand" href="index.jsp">LMS - Zoho</a>

@@ -11,7 +11,7 @@ import java.util.List;
 
 public class AddBookServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
-        if(req.getSession(false) == null){
+        if(req.getSession(false).getAttribute("Librarian_Id") == null){
             RequestDispatcher dispatcher = req.getRequestDispatcher("login.html");
             dispatcher.forward(req,res);
         }
