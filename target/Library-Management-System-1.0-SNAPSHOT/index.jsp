@@ -8,6 +8,21 @@
     <title>LMS - ZOHO</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
+<style>
+    body{
+        background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7)),
+        url("Library.jpeg");
+        background-position: center;
+        height: 100vh;
+        background-attachment: fixed;
+        background-repeat: no-repeat;
+        background-size: cover;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+    }
+</style>
 <body>
 <nav class="navbar navbar-dark bg-primary navbar-expand-lg ">
     <div class="container-fluid">
@@ -51,8 +66,9 @@
 <%--<% if(session.getAttribute("Librarian_Id") != null) { %>--%>
     <div class="container pt-5">
         <div class="row">
-            <div class="col-md-12">
-                <h1 class="display-4 text-center mb-4">Welcome to Library Management System</h1>
+            <div class="col-md-12 mt-5">
+
+                <h1 class="display-4 text-center mt-5 text-white">Library Management System</h1>
 
             </div>
         </div>
