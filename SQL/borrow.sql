@@ -14,5 +14,4 @@ use `Library`;
 --     foreign key (Issued_By) references Librarian(Librarian_Id)
 --     );
 -- UPDATE `library`.`Borrow` SET `Borrow_Date` = '2022-03-15 00:00:00' WHERE (`Borrow_Id` = '2');
--- SELECT * FROM Borrow;
 SELECT * FROM Borrow;
