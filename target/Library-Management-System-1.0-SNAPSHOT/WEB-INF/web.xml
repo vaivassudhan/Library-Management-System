@@ -82,8 +82,16 @@
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/login</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>LogoutServlet</servlet-name>
+        <servlet-class>Librarian.LogoutServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>LogoutServlet</servlet-name>
+        <url-pattern>/logout</url-pattern>
+    </servlet-mapping>
     
-<!--    Student Servlets-->
+    <!--    Student Servlets-->
     <servlet>
         <servlet-name>AddStudentServlet</servlet-name>
         <servlet-class>Student.AddStudentServlet</servlet-class>
@@ -126,6 +134,7 @@
         <servlet-name>ConfirmReturnServlet</servlet-name>
         <servlet-class>Borrow_Return.ConfirmReturnServlet</servlet-class>
     </servlet>
+
     <servlet-mapping>
         <servlet-name>ConfirmReturnServlet</servlet-name>
         <url-pattern>/confirm-return</url-pattern>
