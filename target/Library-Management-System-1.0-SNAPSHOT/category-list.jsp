@@ -17,6 +17,9 @@
 td{
   text-align : center;
 }
+th{
+    text-align : center;
+}
 </style>
 <body>
 <nav class="navbar navbar-dark bg-primary navbar-expand-lg ">
@@ -56,47 +59,50 @@ td{
     </div>
 </nav>
 <div class="container pt-5">
-  <h2 class="text-center">Category List</h2>
+
   <div class="row justify-content-center mt-4">
     <div class="col-md-6">
-      <table class="table table-striped">
-      <thead>
-          <tr>
-            <th >#</th>
-            <th>Category Name</th>
-          </tr>
-        </thead>
-        <tbody>
-            <%
-            List<Category> allCategoryList = (ArrayList<Category>)request.getAttribute("allCategoryList");
-            for(Category category:allCategoryList){
-            %>
-            <tr>
-            <td><%= category.getCategory_Id() %></td>
-              <td><%= category.getCategory_Name() %></td>
-            </tr>
-            <% } %>
-        </tbody>
-      </table>
+        <h4 class="text-center mb-4">Category List</h4>
+          <table class="table table-striped">
+          <thead>
+              <tr>
+                <th >#</th>
+                <th>Category Name</th>
+              </tr>
+            </thead>
+            <tbody>
+                <%
+                List<Category> allCategoryList = (ArrayList<Category>)request.getAttribute("allCategoryList");
+                for(Category category:allCategoryList){
+                %>
+                <tr>
+                <td><%= category.getCategory_Id() %></td>
+                  <td><%= category.getCategory_Name() %></td>
+                </tr>
+                <% } %>
+            </tbody>
+          </table>
     </div>
+      <div class="col-md-6">
+          <h4 class="text-center mb-4">Search Books</h4>
+          <form action="<%=request.getContextPath()%>/search-by-category" method="post">
+              <div class="form-group my-2" style="font-size: 1.3rem">
+                  <label for="Category_Id" class="form-label">Search Book By Category : </label>
+                  <select class="form-select form-select-lg mb-3" name="Category_Id" id="Category_Id">
+                      <% for(Category category: allCategoryList){%>
+                      <option value="<%= category.getCategory_Id() %>"> <%= category.getCategory_Name() %> </option>
+
+                      <% } %>
+                  </select>
+                  <button type="submit" class="btn btn-primary float-right">Search</button>
+              </div>
+          </form>
+      </div>
   </div>
-    <div class="row justify-content-center mt-4">
-        <div class="col-md-6">
-            <form action="<%=request.getContextPath()%>/search-by-category" method="post">
-                <div class="form-group">
-                    <label for="Category_Id" class="form-label">Search Books by Category : </label>
-                    <select name="Category_Id" id="Category_Id">
-                        <% for(Category category: allCategoryList){%>
-                        <option value="<%= category.getCategory_Id() %>"> <%= category.getCategory_Name() %> </option>
-
-                        <% } %>
-                    </select>
-                </div>
-
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
-        </div>
-    </div>
+<%--    <div class="row justify-content-center mt-4">--%>
+<%--        --%>
+<%--    </div>--%>
 </div>
+
 </body>
 </html>

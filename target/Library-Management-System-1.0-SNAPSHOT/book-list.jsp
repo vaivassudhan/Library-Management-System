@@ -81,7 +81,7 @@
               </table>
             </div>
 
-            <div class="col-md-4 pl-2">
+            <div class="col-md-3 mx-4">
                 <h2 class="display4 text-center">Update Stock</h2>
                 <form method="post" action="update-stock">
                     <div class="form-group">

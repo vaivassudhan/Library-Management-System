@@ -17,6 +17,9 @@
         td {
             text-align: center;
         }
+        th {
+            text-align: center;
+        }
     </style>
 </head>
 <body>
