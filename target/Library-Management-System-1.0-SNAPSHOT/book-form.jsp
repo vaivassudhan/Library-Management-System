@@ -13,9 +13,16 @@
     <title>Title</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
+<style>
+    #Category_Id{
+        width: 100%;
+        height: 2rem;
+    }
+</style>
 <body>
 <%--Check if user is logged in --%>
 <%
+    System.out.println("HELLOOOOO " + session.getAttribute("Librarian_Id"));
     if(session.getAttribute("Librarian_Id") == null){
     RequestDispatcher dispatcher = request.getRequestDispatcher("login.html");
     dispatcher.forward(request,response);
@@ -54,14 +61,18 @@
                 <li class="nav-item">
                     <a class="nav-link" href="view-borrow">View Issued Books</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="logout">Logout</a>
+                </li>
             </ul>
         </div>
     </div>
 </nav>
 <div class="container pt-5">
-    <div class="row">
-        <h2 class="text-centre">Add Book Form </h2>
-        <div class="col-md-12">
+    <div class="row justify-content-center mt-2">
+
+        <div class="col-md-8">
+            <h3 class="text-center display4">Add Book Form </h3>
             <form action="<%=request.getContextPath()%>/add-book" method="post">
                 <div class="mb-3">
                     <label for="Book_Title" class="form-label">Book Title</label>
@@ -73,7 +84,7 @@
                 </div>
                 <div class="mb-3">
                     <label for="Nos_Available" class="form-label">Nos Available</label>
-                    <input type="text" class="form-control" id="Nos_Available" name="Nos_Available">
+                    <input type="number" class="form-control" id="Nos_Available" name="Nos_Available">
                 </div>
                 <div class="mb-3">
                     <label for="Category_Id" class="form-label">Category</label>
@@ -86,7 +97,7 @@
                 </div>
                 <div class="mb-3">
                     <label for="Published_Year" class="form-label">Published Year</label>
-                    <input type="text" class="form-control" id="Published_Year" name="Published_Year">
+                    <input type="number" class="form-control" id="Published_Year" name="Published_Year">
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>

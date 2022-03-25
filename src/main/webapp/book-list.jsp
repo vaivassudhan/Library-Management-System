@@ -53,7 +53,7 @@
 
         <div class="row justify-content-center mt-4">
             <div class="col-md-8">
-                <h2 class="text-center">Book List</h2>
+                <h3 class="text-center">Book List</h3>
               <table class="table table-striped">
               <thead>
                   <tr>
@@ -85,7 +85,7 @@
             </div>
 
             <div class="col-md-3 mx-4">
-                <h2 class="display4 text-center">Update Stock</h2>
+                <h3 class="display4 text-center">Update Stock</h3>
                 <form method="post" action="update-stock">
                     <div class="form-group">
                         <label for="Book_Id">Book ID : </label>
