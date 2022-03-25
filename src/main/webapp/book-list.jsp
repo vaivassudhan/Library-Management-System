@@ -47,9 +47,10 @@
     </div>
 </nav>
     <div class="container pt-5">
-        <h2 class="text-center">Book List</h2>
+
         <div class="row justify-content-center mt-4">
-            <div class="col-md-10">
+            <div class="col-md-8">
+                <h2 class="text-center">Book List</h2>
               <table class="table table-striped">
               <thead>
                   <tr>
@@ -79,21 +80,23 @@
                 </tbody>
               </table>
             </div>
+
+            <div class="col-md-4 pl-2">
+                <h2 class="display4 text-center">Update Stock</h2>
+                <form method="post" action="update-stock">
+                    <div class="form-group">
+                        <label for="Book_Id">Book ID : </label>
+                        <input type="text" class="form-control" id="Book_Id" name="Book_Id" placeholder="Enter Book ID">
+                    </div>
+                    <div class="form-group">
+                        <label for="Nos_Available">Nos Available : </label>
+                        <input type="text" class="form-control" id="Nos_Available" name="Nos_Available" placeholder="Update stock">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
         </div>
-        <h2 class="display4 text-center">Update Book Stock</h2>
-        <div class="row justify-content-center mt-4">
-            <form method="post" action="update-stock">
-                <div class="form-group">
-                    <label for="Book_Id">Book ID : </label>
-                    <input type="text" class="form-control" id="Book_Id" name="Book_Id" placeholder="Enter Book ID">
-                </div>
-                <div class="form-group">
-                    <label for="Nos_Available">Nos Available : </label>
-                    <input type="text" class="form-control" id="Nos_Available" name="Nos_Available" placeholder="Update stock">
-                </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
-        </div>
+
     </div>
 </body>
 </html>
