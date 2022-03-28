@@ -1,7 +1,19 @@
 package Librarian;
 
 public class Librarian {
-    private String Librarian_Id,Password,Name;
+    private String Librarian_Id;
+    private String Password;
+    private String Name;
+
+    public String getGender() {
+        return Gender;
+    }
+
+    public void setGender(String gender) {
+        Gender = gender;
+    }
+
+    private String Gender;
     private int role;
 
     public String getLibrarian_Id() {

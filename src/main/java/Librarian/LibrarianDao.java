@@ -48,4 +48,24 @@ public class LibrarianDao {
         }
         return librarian;
     }
+
+//  Function to add Librarian
+    public static int addLibrarian(Librarian librarian){
+        Connection con = DBConnection.getConnection();
+        int status = 0;
+        try {
+            PreparedStatement ps = con.prepareStatement("INSERT INTO Librarian(Librarian_Id, Password, Name, Gender, Role) VALUES(?,?,?,?,?)");
+            ps.setString(1,librarian.getLibrarian_Id());
+            ps.setString(2,librarian.getLibrarian_Id());
+            ps.setString(3,librarian.getName());
+            ps.setString(4,librarian.getGender());
+            ps.setInt(5,librarian.getRole());
+            status = ps.executeUpdate();
+            con.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return status;
+    }
 }

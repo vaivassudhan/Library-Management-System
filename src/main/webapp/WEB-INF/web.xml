@@ -90,6 +90,15 @@
         <servlet-name>LogoutServlet</servlet-name>
         <url-pattern>/logout</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AddLibrarianServlet</servlet-name>
+        <servlet-class>Librarian.AddLibrarianServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AddLibrarianServlet</servlet-name>
+        <url-pattern>/add-librarian</url-pattern>
+    </servlet-mapping>
     
     <!--    Student Servlets-->
     <servlet>
