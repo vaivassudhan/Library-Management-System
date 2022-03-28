@@ -1,25 +1,15 @@
 package Fine;
 
+import DBConnection.DBConnection;
+
 import java.sql.*;
 
 public class FineDao {
-    //    Function to establish DB Connection
-    public static Connection getConnection(){
-        Connection con = null;
-        try{
-
-            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/Library",
-                    "root", "vaivas2001");
-        }catch(Exception e){
-            System.out.println(e);
-        }
-        return con;
-    }
 
     public static Fine getFineById(int group_id) {
         Fine fine = new Fine();
         try {
-            Connection con = getConnection();
+            Connection con = DBConnection.getConnection();
             PreparedStatement ps = con.prepareStatement("SELECT * FROM Fine WHERE Group_Id = ?");
             ps.setInt(1, group_id);
             ResultSet result = ps.executeQuery();

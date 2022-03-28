@@ -1,6 +1,8 @@
 package Borrow_Return;
 
 import Book.BookDao;
+import DBConnection.DBConnection;
+import Fine.FineDao;
 
 import java.sql.*;
 import java.text.ParseException;
@@ -9,23 +11,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BorrowDao {
-    public static Connection getConnection(){
-        Connection con = null;
-        try{
-
-            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/Library",
-                    "root", "vaivas2001");
-        }catch(Exception e){
-            System.out.println(e);
-        }
-        return con;
-    }
     //  Function to Borrow book
     public static int borrowBook(Borrow borrow){
         int borrow_id = 0;
         int status = 0;
         try {
-            Connection con = getConnection();
+            Connection con = DBConnection.getConnection();
 
 //          Check for book stock
             PreparedStatement statement = con.prepareStatement("SELECT Nos_Available FROM Book WHERE Book_Id = ?");
@@ -81,7 +72,7 @@ public class BorrowDao {
     public static List<Borrow> getAllBorrow(){
         List<Borrow> allBorrow = new ArrayList<>();
         try{
-            Connection con = getConnection();
+            Connection con = DBConnection.getConnection();
             PreparedStatement ps = con.prepareStatement("SELECT b.Book_Title, s.Student_Name, br.Issued_By, br.Borrow_Date, br.Return_Date, br.Fine_Paid, br.Borrow_Id FROM Book b, Student s, Borrow br WHERE (s.Student_Id = br.Student_Id AND b.Book_Id = br.Book_Id) AND br.Return_Date is NULL;");
             ResultSet result = ps.executeQuery();
             while(result.next()){
@@ -112,7 +103,7 @@ public class BorrowDao {
         borrow.setBorrow_Id(borrow_id);
         long days_difference = 0;
         try{
-            Connection con = getConnection();
+            Connection con = DBConnection.getConnection();
 //          Get borrow details
             PreparedStatement ps = con.prepareStatement("SELECT br.Borrow_Id,br.Book_Id, br.Student_Id, br.Issued_By, br.Borrow_Date, b.Book_Title,br.Return_Date, s.Student_Name FROM Borrow br, Student s, Book b WHERE br.Book_Id = b.Book_Id AND br.Student_Id = s.Student_Id AND br.Return_Date is null AND  br.Borrow_Id = ?;");
             ps.setInt(1,borrow_id);
@@ -175,7 +166,7 @@ public class BorrowDao {
     public static int confirmReturn(Borrow borrow){
         int status = 0 ;
         try{
-            Connection con = getConnection();
+            Connection con = DBConnection.getConnection();
             PreparedStatement ps = con.prepareStatement("UPDATE Borrow SET Return_Date = ?  WHERE Borrow_Id = ?");
             ps.setDate(1,borrow.getReturn_Date());
             ps.setInt(2,borrow.getBorrow_Id());
@@ -199,7 +190,7 @@ public class BorrowDao {
     public static List<Borrow> getAllReturned(){
         List<Borrow> allReturn = new ArrayList<>();
         try{
-            Connection con = getConnection();
+            Connection con = DBConnection.getConnection();
             PreparedStatement ps = con.prepareStatement("SELECT b.Book_Title, s.Student_Name, br.Issued_By, br.Borrow_Date, br.Return_Date, br.Fine_Paid, br.Borrow_Id FROM Book b, Student s, Borrow br WHERE s.Student_Id = br.Student_Id AND b.Book_Id = br.Book_Id AND br.Return_Date is not null;");
             ResultSet result = ps.executeQuery();
             while(result.next()){

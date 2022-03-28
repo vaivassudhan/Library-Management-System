@@ -1,27 +1,17 @@
 package Category;
 
+import DBConnection.DBConnection;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CategoryDao {
-    //  Function to establish connection to DB (Returns connection object)
-    public static Connection getConnection(){
-        Connection con = null;
-        try{
-
-            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/Library",
-                    "root", "vaivas2001");
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-        return con;
-    }
 //  Function to add category
     public static int addCategory(Category category){
         int status = 0;
         try {
-            Connection con = getConnection();
+            Connection con = DBConnection.getConnection();
 //          Insert into category table query, prepare statement with values from passed category object
             PreparedStatement ps = con.prepareStatement("INSERT INTO Category( Category_Name) VALUES (?)");
             ps.setString(1,category.getCategory_Name());
@@ -39,7 +29,7 @@ public class CategoryDao {
     public static List<Category> getAllCategory(){
         List<Category> allCategory = new ArrayList<Category>();
         try{
-            Connection con = getConnection();
+            Connection con = DBConnection.getConnection();
             PreparedStatement ps = con.prepareStatement("SELECT * FROM Category");
             ResultSet result = ps.executeQuery();
             while(result.next()){
@@ -57,7 +47,7 @@ public class CategoryDao {
     public static String getCategoryNameById(int category_id){
         String Category_Name = "";
         try{
-            Connection con = getConnection();
+            Connection con = DBConnection.getConnection();
             PreparedStatement ps = con.prepareStatement("SELECT * FROM Category WHERE Category_Id = ?");
             ps.setInt(1,category_id);
             ResultSet result = ps.executeQuery();

@@ -1,23 +1,14 @@
 package Librarian;
 
+import DBConnection.DBConnection;
+
 import java.sql.*;
 
 public class LibrarianDao {
-//    Function to establish DB Connection
-    public static Connection getConnection(){
-        Connection con = null;
-        try{
 
-            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/Library",
-                    "root", "vaivas2001");
-        }catch(Exception e){
-            System.out.println(e);
-        }
-        return con;
-    }
 //   Function to validate login
     public static boolean validate(String Lid,String Password){
-        Connection con = getConnection();
+        Connection con = DBConnection.getConnection();
         boolean status = false;
         PreparedStatement ps = null;
         try {
@@ -40,7 +31,7 @@ public class LibrarianDao {
 
 //   Function to get librarian details after login
     public static Librarian getDataById(String Lid){
-        Connection con = getConnection();
+        Connection con = DBConnection.getConnection();
         Librarian librarian = new Librarian();
 
         try {
