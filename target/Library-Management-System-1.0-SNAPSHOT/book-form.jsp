@@ -1,16 +1,11 @@
 <%@ page import="java.util.List" %>
 <%@ page import="Category.Category" %>
-<%@ page import="java.util.ArrayList" %><%--
-  Created by IntelliJ IDEA.
-  User: vaivas
-  Date: 19/03/22
-  Time: 1:23 PM
-  To change this template use File | Settings | File Templates.
---%>
+<%@ page import="java.util.ArrayList" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>LMS - Zoho</title>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 <style>
@@ -20,46 +15,64 @@
     }
 </style>
 <body>
-<%--Check if user is logged in --%>
+<%--Check if user is logged in, redirect to login if not--%>
 <%
-    System.out.println("HELLOOOOO " + session.getAttribute("Librarian_Id"));
-    if(session.getAttribute("Librarian_Id") == null){
+    if(session.getAttribute("Librarian_Id") == null)
+    {
     RequestDispatcher dispatcher = request.getRequestDispatcher("login.html");
     dispatcher.forward(request,response);
     }
 %>
+<%--Get all category details from request --%>
 <%  List<Category> allCategory = (ArrayList<Category>)request.getAttribute("allCategory"); %>
-<nav class="navbar navbar-dark bg-primary navbar-expand-lg ">
+<nav class="navbar navbar-dark bg-dark navbar-expand-lg ">
     <div class="container-fluid">
         <a class="navbar-brand" href="index.jsp">LMS - Zoho</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a class="nav-link "  href="index.jsp">Home</a>
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0" >
+                <%-- Books Dropdown --%>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="book-dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Manage Books
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="book-dropdown">
+                        <li><a class="dropdown-item" href="book-form">Add Book</a></li>
+                        <li><a class="dropdown-item" href="view-books">Book List</a></li>
+                    </ul>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="book-form">Add Book</a>
+                <%-- Categories drop down  --%>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="category-dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Manage Categories
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="category-dropdown">
+                        <li><a class="dropdown-item" href="category-form.jsp">Add Category</a></li>
+                        <li><a class="dropdown-item" href="view-category">View Category</a></li>
+                    </ul>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="view-books">Book List</a>
+                <%-- Issue return  drop down  --%>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="issue-dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Manage Issue / Return
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="issue-dropdown">
+                        <li><a class="dropdown-item" href="book-issue.jsp">Issue Book</a></li>
+                        <li><a class="dropdown-item" href="return-book.jsp">Return Book</a></li>
+                        <li><a class="dropdown-item" href="view-borrow">View Issued Books</a></li>
+                    </ul>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="category-form.jsp">Add Category</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="view-category">View Category</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="book-issue.jsp">Issue Book</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="return-book.jsp">Return Book</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="view-borrow">View Issued Books</a>
+                <%-- Student  drop down  --%>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="student-dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Manage Student
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="student-dropdown">
+                        <li><a class="dropdown-item" href="student-form.jsp">Add Student</a></li>
+                        <li><a class="dropdown-item" href="view-student">View Students</a></li>
+                    </ul>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="logout">Logout</a>
@@ -70,7 +83,6 @@
 </nav>
 <div class="container pt-5">
     <div class="row justify-content-center mt-2">
-
         <div class="col-md-8">
             <h3 class="text-center display4">Add Book Form </h3>
             <form action="<%=request.getContextPath()%>/add-book" method="post">
@@ -89,6 +101,7 @@
                 <div class="mb-3">
                     <label for="Category_Id" class="form-label">Category</label>
                     <select name="Category_Id" id="Category_Id">
+                    <%-- Drop down Values for category --%>
                         <% for(Category category: allCategory){%>
                         <option value="<%= category.getCategory_Id() %>"> <%= category.getCategory_Name() %> </option>
 

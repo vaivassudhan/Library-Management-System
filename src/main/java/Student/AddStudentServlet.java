@@ -23,8 +23,16 @@ public class AddStudentServlet extends HttpServlet {
 
         int status = StudentDao.registerStudent(student);
         if(status > 0 ){
-
-            out.println("Added Student");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("message.jsp");
+            request.setAttribute("message-type","success");
+            request.setAttribute("message","Student "+ request.getParameter("Student_Name") +" Added Successfully!");
+            dispatcher.forward(request,response);
+        }
+        else{
+            RequestDispatcher dispatcher = request.getRequestDispatcher("message.jsp");
+            request.setAttribute("message-type","error");
+            request.setAttribute("message","Some Error Occurred");
+            dispatcher.forward(request,response);
         }
 
     }

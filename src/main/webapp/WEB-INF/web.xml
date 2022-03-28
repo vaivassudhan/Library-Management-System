@@ -100,6 +100,14 @@
         <servlet-name>AddStudentServlet</servlet-name>
         <url-pattern>/add-student</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>ViewStudentServlet</servlet-name>
+        <servlet-class>Student.ViewStudentServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ViewStudentServlet</servlet-name>
+        <url-pattern>/view-student</url-pattern>
+    </servlet-mapping>
 
 <!--    Borrow_Return Servlets-->
     <servlet>

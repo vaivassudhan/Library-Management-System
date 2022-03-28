@@ -48,6 +48,7 @@ public class CategoryDao {
                 category.setCategory_Name(result.getString(2));
                 allCategory.add(category);
             }
+            con.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -63,6 +64,7 @@ public class CategoryDao {
             if(result.next()){
                 Category_Name = result.getString(2);
             }
+            con.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }

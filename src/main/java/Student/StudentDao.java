@@ -1,9 +1,10 @@
 package Student;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import Category.Category;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class StudentDao {
 //  Function to establish connection to DB (Returns connection object)
@@ -34,5 +35,31 @@ public class StudentDao {
             e.printStackTrace();
         }
         return status;
+    }
+
+
+//    Function to get all student
+    public static List<Student> getAllStudent(){
+        List<Student> allStudent = new ArrayList<Student>();
+        try{
+            Connection con = getConnection();
+            PreparedStatement ps = con.prepareStatement("SELECT Student_Id, Student_Name, Gender, Group_Id, Mobile FROM Student");
+            ResultSet result = ps.executeQuery();
+            while(result.next()){
+                Student student = new Student();
+
+                student.setStudent_Id(result.getInt(1));
+                student.setStudent_Name(result.getString(2));
+                student.setGender(result.getString(3));
+                student.setGroup_id(result.getInt(4));
+                student.setMobile(result.getString(5));
+
+                allStudent.add(student);
+            }
+            con.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return allStudent;
     }
 }

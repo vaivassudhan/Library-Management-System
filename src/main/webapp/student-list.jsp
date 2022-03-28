@@ -1,7 +1,12 @@
-<%@ page import="Book.Book" %>
+<%@ page import="Student.Student" %>
 <%@ page import="java.util.List" %>
-<%@ page import="java.util.ArrayList" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="java.util.ArrayList" %><%--
+  Created by IntelliJ IDEA.
+  User: vaivas
+  Date: 25/03/22
+  Time: 5:00 PM
+  To change this template use File | Settings | File Templates.
+--%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -70,50 +75,63 @@
     <div class="container pt-5">
         <div class="row justify-content-center mt-4">
             <div class="col-md-8">
-                <h4 class="text-center mb-4">Book List</h4>
-              <table class="table table-striped">
-              <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>Book Title</th>
-                    <th>Author Name</th>
-                    <th>Category</th>
-                    <th>Stock</th>
-                    <th>Year</th>
-                  </tr>
-                </thead>
-                <tbody>
+                <h3 class="text-center">Student List</h3>
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Student Name</th>
+                        <th>Gender</th>
+                        <th>Group </th>
+                        <th>Mobile Number</th>
+                    </tr>
+                    </thead>
+                    <tbody>
                     <%
-                    List<Book> allBook = (ArrayList<Book>)request.getAttribute("allBook");
-                    for(Book book:allBook){
+                        List<Student> allStudent = (ArrayList<Student>)request.getAttribute("allStudent");
+                        for(Student student:allStudent){
 
                     %>
                     <tr>
-                    <td><%= book.getBook_Id() %></td>
-                      <td><%= book.getBook_Title() %></td>
-                        <td><%= book.getAuthor_Name() %></td>
-                        <td><%= book.category_name %></td>
-                        <td><%= book.getNos_Available() %></td>
-                        <td><%= book.getPublished_year() %></td>
+                        <td><%= student.getStudent_Id() %></td>
+                        <td><%= student.getStudent_Name() %></td>
+                        <td><%= student.getGender() %></td>
+                        <td><%= student.getGroup_id() %></td>
+                        <td><%= student.getMobile() %></td>
                     </tr>
                     <% } %>
-                </tbody>
-              </table>
+                    </tbody>
+                </table>
             </div>
 
             <div class="col-md-3 mx-4">
-                <h4 class="display4 text-center mb-4">Update Stock</h4>
-                <hr>
-                <form method="post" action="update-stock">
-                    <div class="form-group">
-                        <label for="Book_Id">Book ID : </label>
-                        <input type="text" class="form-control" id="Book_Id" name="Book_Id" placeholder="Enter Book ID">
+                <h3 class="display4 text-center">Add Student</h3>
+                <form action="<%=request.getContextPath()%>/add-student" method="post">
+                    <div class="mb-3">
+                        <label for="Student_Name" class="form-label">Student Name</label>
+                        <input type="text" class="form-control" id="Student_Name" name="Student_Name">
                     </div>
-                    <div class="form-group">
-                        <label for="Nos_Available">Nos Available : </label>
-                        <input type="text" class="form-control" id="Nos_Available" name="Nos_Available" placeholder="Update stock">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="Gender" id="Gender" value="Male">
+                        <label class="form-check-label" for="Gender">
+                            Male
+                        </label>
                     </div>
-                    <button type="submit" class="btn btn-primary">Update</button>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="Gender" id="Gender2" value="Female">
+                        <label class="form-check-label" for="Gender2">
+                            Female
+                        </label>
+                    </div>
+                    <div class="mb-3">
+                        <label for="Group_Id" class="form-label">Group Id</label>
+                        <input type="text" class="form-control" id="Group_Id" name="Group_Id">
+                    </div>
+                    <div class="mb-3">
+                        <label for="Mobile" class="form-label">Mobile</label>
+                        <input type="text" class="form-control" id="Mobile" name="Mobile">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
             </div>
         </div>
