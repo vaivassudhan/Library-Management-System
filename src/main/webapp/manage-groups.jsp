@@ -1,4 +1,6 @@
-<%--
+<%@ page import="Group_days.GroupDays" %>
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.ArrayList" %><%--
   Created by IntelliJ IDEA.
   User: vaivas
   Date: 28/03/22
@@ -12,6 +14,14 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 <body>
+<style>
+    td{
+        text-align : center;
+    }
+    th{
+        text-align : center;
+    }
+</style>
 <%--Check if user is logged in --%>
 <%
     if(session.getAttribute("Librarian_Id") == null){
@@ -81,40 +91,65 @@
         </div>
     </div>
 </nav>
+
 <div class="container pt-5">
-    <div class="row">
-        <h2 class="text-centre">  </h2>
-        <div class="col-md-12">
-            <form action="<%=request.getContextPath()%>/add-student" method="post">
-                <div class="mb-3">
-                    <label for="Student_Name" class="form-label">Student Name</label>
-                    <input type="text" class="form-control" id="Student_Name" name="Student_Name">
+    <div class="row justify-content-center mt-4">
+        <div class="col-md-6">
+            <h4 class="text-center mb-4">Group List</h4>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Group ID</th>
+                    <th>Days </th>
+                </tr>
+                </thead>
+                <tbody>
+                <%
+                    List<GroupDays> allGroups = (ArrayList<GroupDays>)request.getAttribute("allGroups");
+                    for(GroupDays group:allGroups){
+
+                %>
+                <tr>
+                    <td><%= group.getGroup_Id() %></td>
+                    <td><%= group.getDays() %></td>
+                </tr>
+                <% } %>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-4 mx-4">
+            <h4 class="display4 text-center mb-4">Add New Group</h4>
+            <hr>
+            <form method="post" action="add-group">
+                <div class="form-group">
+                    <label for="Days">No of days : </label>
+                    <input type="text" class="form-control" id="Days" name="Days" placeholder="No of Days">
                 </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="Gender" id="Gender" value="Male">
-                    <label class="form-check-label" for="Gender">
-                        Male
-                    </label>
+                <button type="submit" class="btn btn-primary">Add</button>
+            </form>
+            <hr>
+            <h4 class="display4 text-center mb-4">Update Days</h4>
+            <hr>
+            <form method="post" action="update-days">
+                <div class="form-group">
+                    <label for="UGroup_Id">Group ID : </label>
+                    <input type="text" class="form-control" id="UGroup_Id" name="Group_Id" placeholder="Enter Group ID">
                 </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="Gender" id="Gender2" value="Female">
-                    <label class="form-check-label" for="Gender2">
-                        Female
-                    </label>
+                <div class="form-group">
+                    <label for="UDays">No of days : </label>
+                    <input type="text" class="form-control" id="UDays" name="Days" placeholder="Update Days">
                 </div>
-                <div class="mb-3">
-                    <label for="Group_Id" class="form-label">Group Id</label>
-                    <input type="text" class="form-control" id="Group_Id" name="Group_Id">
-                </div>
-                <div class="mb-3">
-                    <label for="Mobile" class="form-label">Mobile</label>
-                    <input type="text" class="form-control" id="Mobile" name="Mobile">
-                </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit" class="btn btn-primary">Update</button>
             </form>
         </div>
     </div>
+<%--    <div class="row justify-content-center mt-4">--%>
+<%--        <div class="col-md-4 mx-4">--%>
+<%--            --%>
+<%--        </div>--%>
+<%--    </div>--%>
 </div>
+
 </body>
 </html>
 

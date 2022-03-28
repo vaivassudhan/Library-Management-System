@@ -156,4 +156,31 @@
         <servlet-name>ConfirmReturnServlet</servlet-name>
         <url-pattern>/confirm-return</url-pattern>
     </servlet-mapping>
+
+<!--    Group days-->
+    <servlet>
+        <servlet-name>GetGroupDaysServlet</servlet-name>
+        <servlet-class>Group_days.GetGroupDaysServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GetGroupDaysServlet</servlet-name>
+        <url-pattern>/get-groups</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>UpdateDaysServlet</servlet-name>
+        <servlet-class>Group_days.UpdateDaysServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UpdateDaysServlet</servlet-name>
+        <url-pattern>/update-days</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>AddGroupServlet</servlet-name>
+        <servlet-class>Group_days.AddGroupServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AddGroupServlet</servlet-name>
+        <url-pattern>/add-group</url-pattern>
+    </servlet-mapping>
 </web-app>
