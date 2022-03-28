@@ -3,6 +3,8 @@ package Fine;
 import DBConnection.DBConnection;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FineDao {
 
@@ -40,5 +42,43 @@ public class FineDao {
             e.printStackTrace();
         }
         return status;
+    }
+
+//  Add Fine with group id
+    public static int addFine(Fine fine){
+        int status = 0;
+        try{
+            Connection con = DBConnection.getConnection();
+            PreparedStatement ps = con.prepareStatement("INSERT INTO Fine(Group_Id, Fine_Per_Day) VALUES(?,?)");
+
+            ps.setInt(1,fine.getGroup_Id());
+            ps.setFloat(2,fine.getFine_Per_Day());
+
+            status = ps.executeUpdate();
+            con.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return status;
+    }
+
+//    Get ALl fine
+    public static List<Fine> getALlFine(){
+        List<Fine> allFine = new ArrayList<Fine>();
+        try {
+            Connection con = DBConnection.getConnection();
+            PreparedStatement ps = con.prepareStatement("SELECT Group_Id,Fine_Per_Day FROM Fine");
+            ResultSet result = ps.executeQuery();
+            while(result.next()){
+                Fine fine = new Fine();
+                fine.setGroup_Id(result.getInt(1));
+                fine.setFine_Per_Day(result.getFloat(2));
+                allFine.add(fine);
+            }
+            con.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return allFine;
     }
 }

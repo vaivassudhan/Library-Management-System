@@ -183,4 +183,22 @@
         <servlet-name>AddGroupServlet</servlet-name>
         <url-pattern>/add-group</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>UpdateFineServlet</servlet-name>
+        <servlet-class>Fine.UpdateFineServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>UpdateFineServlet</servlet-name>
+        <url-pattern>/update-fine</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>GetFineServlet</servlet-name>
+        <servlet-class>Fine.GetFineServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GetFineServlet</servlet-name>
+        <url-pattern>/get-fine</url-pattern>
+    </servlet-mapping>
 </web-app>

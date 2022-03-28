@@ -48,7 +48,7 @@ public class BorrowDao {
                 ResultSet rs = ps.getGeneratedKeys();
                 rs.next();
                 borrow_id = rs.getInt(1);
-                System.out.println("Borrow Id "+rs.getInt(1));
+//                System.out.println("Borrow Id "+rs.getInt(1));
 //                status = ps.executeUpdate();
                 if(rs.getInt(1) != 0  ){
                     ps = con.prepareStatement("UPDATE Book SET Nos_Available = Nos_Available - 1 WHERE Book_Id = ? ");

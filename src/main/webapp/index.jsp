@@ -83,6 +83,7 @@
                     <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="student-dropdown">
                         <li><a class="dropdown-item" href="librarian-form.jsp">Add Librarian</a></li>
                         <li><a class="dropdown-item" href="get-groups">Manage Groups</a></li>
+                        <li><a class="dropdown-item" href="get-fine">Manage Fine</a></li>
                     </ul>
                 </li>
     <% } %>
@@ -97,8 +98,6 @@
         <div class="row">
             <div class="col-md-12 mt-5">
                 <h1 class="display-4 text-center mt-5 text-white">Library Management System</h1>
-
-                <a href="librarian-form.jsp">Add librarian</a>
             </div>
         </div>
     </div>

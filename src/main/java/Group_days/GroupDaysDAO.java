@@ -64,16 +64,23 @@ public class GroupDaysDAO {
 
 //  Add Group Days
     public static int addGroup(GroupDays groupDays){
-        int status = 0;
+        int group_id = 0;
         try{
             Connection con = DBConnection.getConnection();
-            PreparedStatement ps = con.prepareStatement("INSERT INTO Group_Days( Days) VALUES (?)");
+            String sql = "INSERT INTO Group_Days(Days) VALUES (?)";
+            PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1,groupDays.getDays());
-            status = ps.executeUpdate();
+
+            ps.executeUpdate();
+            ResultSet rs = ps.getGeneratedKeys();
+            rs.next();
+            group_id = rs.getInt(1);
+
+
             con.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return status;
+        return group_id;
     }
 }

@@ -69,6 +69,19 @@
                         <li><a class="dropdown-item" href="view-student">View Students</a></li>
                     </ul>
                 </li>
+                <%--            Manage Admin--%>
+                <% if((Integer)session.getAttribute("Role") == 1){ %>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="admin-dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Admin Manage
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="student-dropdown">
+                        <li><a class="dropdown-item" href="librarian-form.jsp">Add Librarian</a></li>
+                        <li><a class="dropdown-item" href="get-groups">Manage Groups</a></li>
+                        <li><a class="dropdown-item" href="get-fine">Manage Fine</a></li>
+                    </ul>
+                </li>
+                <% } %>
                 <li class="nav-item">
                     <a class="nav-link" href="logout">Logout</a>
                 </li>
