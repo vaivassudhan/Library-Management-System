@@ -17,10 +17,10 @@ public class AddCategoryServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if(request.getSession(false).getAttribute("Librarian_Id") == null){
-            RequestDispatcher dispatcher = request.getRequestDispatcher("login.html");
-            dispatcher.forward(request,response);
-        }
+//        if(request.getSession(false).getAttribute("Librarian_Id") == null){
+//            RequestDispatcher dispatcher = request.getRequestDispatcher("login.html");
+//            dispatcher.forward(request,response);
+//        }
         String category_name = request.getParameter("category_name");
         Category category = new Category();
         category.setCategory_Name(category_name);
