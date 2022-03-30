@@ -25,7 +25,6 @@ public class AddCategoryServlet extends HttpServlet {
         Gson gson = new Gson();
         Category category = gson.fromJson(String.valueOf(jb), Category.class);
 
-        System.out.println(category.getCategory_Name());
 
         JsonObject jsonobject = new JsonObject();
         PrintWriter out = response.getWriter();

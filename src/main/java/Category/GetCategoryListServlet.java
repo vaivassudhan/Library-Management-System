@@ -1,6 +1,7 @@
 package Category;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -21,14 +22,14 @@ public class GetCategoryListServlet extends HttpServlet {
         out.print(bookJson);
         out.flush();
 
-//        request.setAttribute("allCategoryList",allCategoryList);
-//
-//        RequestDispatcher dispatcher = request.getRequestDispatcher("category-list.jsp");
-//        dispatcher.forward(request,response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        JsonObject jsonobject = new JsonObject();
+        PrintWriter out = response.getWriter();
+        jsonobject.addProperty("message-type","error");
+        jsonobject.addProperty("message","Post method not available");
+        out.write(String.valueOf(jsonobject));
     }
 }

@@ -22,8 +22,6 @@ public class ConfirmReturnServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //      Handling json request
         String jb = Util.jsonRequestHandler(request);
-        System.out.println("TEST Confirm return ");
-        System.out.println(jb);
         Gson gson = new Gson();
 //      Json to Java POJO
         Borrow borrow = gson.fromJson(String.valueOf(jb), Borrow.class);
