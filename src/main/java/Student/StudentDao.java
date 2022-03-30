@@ -37,7 +37,7 @@ public class StudentDao {
         List<Student> allStudent = new ArrayList<Student>();
         try{
             Connection con = DBConnection.getConnection();
-            PreparedStatement ps = con.prepareStatement("SELECT Student_Id, Student_Name, Gender, Group_Id, Mobile FROM Student");
+            PreparedStatement ps = con.prepareStatement("SELECT Student_Id, Student_Name, Gender, Group_Id, Mobile, Email, Address, Batch FROM Student");
             ResultSet result = ps.executeQuery();
             while(result.next()){
                 Student student = new Student();
@@ -47,6 +47,9 @@ public class StudentDao {
                 student.setGender(result.getString(3));
                 student.setGroup_id(result.getInt(4));
                 student.setMobile(result.getString(5));
+                student.setEmail(result.getString(6));
+                student.setAddress(result.getString(7));
+                student.setBatch(result.getInt(8));
 
                 allStudent.add(student);
             }

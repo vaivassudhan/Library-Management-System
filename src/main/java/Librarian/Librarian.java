@@ -4,6 +4,27 @@ public class Librarian {
     private String Librarian_Id;
     private String Password;
     private String Name;
+    private String Gender;
+    private int role;
+    private String Mobile;
+
+    public String getPassword() {
+        return Password;
+    }
+
+    public void setPassword(String password) {
+        Password = password;
+    }
+
+    public String getMobile() {
+        return Mobile;
+    }
+
+    public void setMobile(String mobile) {
+        Mobile = mobile;
+    }
+
+
 
     public String getGender() {
         return Gender;
@@ -13,8 +34,7 @@ public class Librarian {
         Gender = gender;
     }
 
-    private String Gender;
-    private int role;
+
 
     public String getLibrarian_Id() {
         return Librarian_Id;
