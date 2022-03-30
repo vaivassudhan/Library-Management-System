@@ -1,6 +1,7 @@
 package Book;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -12,7 +13,6 @@ import java.util.List;
 public class ViewBookServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println(request.getSession(false));
         List<Book> allBook = BookDao.getALlBooks();
         String bookJson = new Gson().toJson(allBook);
         PrintWriter out = response.getWriter();
@@ -21,14 +21,14 @@ public class ViewBookServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         out.print(bookJson);
         out.flush();
-//        request.setAttribute("allBook",allBook);
-//        RequestDispatcher dispatcher = request.getRequestDispatcher("book-list.jsp");
-//        dispatcher.forward(request,response);
-
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        JsonObject jsonobject = new JsonObject();
+        PrintWriter out = response.getWriter();
+        jsonobject.addProperty("message-type","error");
+        jsonobject.addProperty("message","Post method not available");
+        out.write(String.valueOf(jsonobject));
     }
 }
