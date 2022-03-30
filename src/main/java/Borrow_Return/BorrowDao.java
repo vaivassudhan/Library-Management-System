@@ -81,7 +81,7 @@ public class BorrowDao {
         List<Borrow> allBorrow = new ArrayList<>();
         try{
             Connection con = DBConnection.getConnection();
-            PreparedStatement ps = con.prepareStatement("SELECT b.Book_Title, s.Student_Name, br.Issued_By, br.Borrow_Date, br.Return_Date, br.Fine_Paid, br.Borrow_Id FROM Book b, Student s, Borrow br WHERE (s.Student_Id = br.Student_Id AND b.Book_Id = br.Book_Id) AND br.Return_Date is NULL;");
+            PreparedStatement ps = con.prepareStatement("SELECT b.Book_Title, s.Student_Name, br.Issued_By, br.Borrow_Date, br.Return_Date, br.Fine_Paid, br.Borrow_Id, br.DueDate FROM Book b, Student s, Borrow br WHERE (s.Student_Id = br.Student_Id AND b.Book_Id = br.Book_Id) AND br.Return_Date is NULL;");
             ResultSet result = ps.executeQuery();
             while(result.next()){
                 Borrow borrow = new Borrow();
@@ -92,6 +92,7 @@ public class BorrowDao {
                 borrow.setReturn_Date(result.getDate(5));
                 borrow.setFine_Paid(result.getFloat(6));
                 borrow.setBorrow_Id(result.getInt(7));
+                borrow.setDueDate(result.getDate(8));
                 allBorrow.add(borrow);
             }
         } catch (SQLException e) {
@@ -113,7 +114,7 @@ public class BorrowDao {
         try{
             Connection con = DBConnection.getConnection();
 //          Get borrow details
-            PreparedStatement ps = con.prepareStatement("SELECT br.Borrow_Id,br.Book_Id, br.Student_Id, br.Issued_By, br.Borrow_Date, b.Book_Title,br.Return_Date, s.Student_Name FROM Borrow br, Student s, Book b WHERE br.Book_Id = b.Book_Id AND br.Student_Id = s.Student_Id AND br.Return_Date is null AND  br.Borrow_Id = ?;");
+            PreparedStatement ps = con.prepareStatement("SELECT br.Borrow_Id,br.Book_Id, br.Student_Id, br.Issued_By, br.Borrow_Date, b.Book_Title,br.Return_Date, s.Student_Name, br.DueDate FROM Borrow br, Student s, Book b WHERE br.Book_Id = b.Book_Id AND br.Student_Id = s.Student_Id AND br.Return_Date is null AND  br.Borrow_Id = ?;");
             ps.setInt(1,borrow_id);
             ResultSet result = ps.executeQuery();
             while(result.next()){
@@ -127,6 +128,7 @@ public class BorrowDao {
                 borrow.setBook_Name(result.getString(6));
                 borrow.setReturn_Date(result.getDate(7));
                 borrow.setStudent_Name(result.getString(8));
+                borrow.setDueDate(result.getDate(9));
 
             }
             long millis=System.currentTimeMillis();

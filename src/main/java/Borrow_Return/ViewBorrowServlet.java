@@ -1,8 +1,13 @@
 package Borrow_Return;
 
+import Utils.Util;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
 import javax.servlet.*;
 import javax.servlet.http.*;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
 public class ViewBorrowServlet extends HttpServlet {
@@ -12,14 +17,22 @@ public class ViewBorrowServlet extends HttpServlet {
 //            RequestDispatcher dispatcher = request.getRequestDispatcher("login.html");
 //            dispatcher.forward(request,response);
 //        }
-        System.out.println(request.getSession(false).getAttribute("Librarian_Id"));
+
+        String jb = Util.jsonRequestHandler(request);
         List<Borrow> allBorrow = BorrowDao.getAllBorrow();
         List<Borrow> allReturn = BorrowDao.getAllReturned();
 
-        request.setAttribute("allBorrow",allBorrow);
-        request.setAttribute("allReturn",allReturn);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("borrowed-list.jsp");
-        dispatcher.forward(request,response);
+        JsonObject jsonObject = new JsonObject();
+        PrintWriter out = response.getWriter();
+        String borrowJson = new Gson().toJson(allBorrow);
+        String returnJson = new Gson().toJson(allReturn);
+        String bothJson = '['+borrowJson+','+returnJson+']';
+        response.addHeader("Access-Control-Allow-Origin", "*");
+        response.setContentType("application/json");
+        out.print(bothJson);
+        out.flush();
+
+
     }
 
     @Override
