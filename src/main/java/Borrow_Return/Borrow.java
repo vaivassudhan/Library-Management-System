@@ -8,8 +8,17 @@ public class Borrow {
     private Date Return_Date;
     private String Issued_By;
     private Float Fine_Paid;
+    private Date DueDate;
 
-//    Additional fields for easy access
+    public Date getDueDate() {
+        return DueDate;
+    }
+
+    public void setDueDate(Date dueDate) {
+        DueDate = dueDate;
+    }
+
+    //    Additional fields for easy access
     private String Book_Name , Student_Name;
     private int Group_Id;
 

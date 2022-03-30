@@ -20,6 +20,7 @@ public class GetCategoryListServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         out.print(bookJson);
         out.flush();
+
 //        request.setAttribute("allCategoryList",allCategoryList);
 //
 //        RequestDispatcher dispatcher = request.getRequestDispatcher("category-list.jsp");

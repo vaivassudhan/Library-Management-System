@@ -1,5 +1,10 @@
 package Category;
 
+import Utils.Util;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
@@ -9,32 +14,51 @@ import java.io.PrintWriter;
 public class AddCategoryServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if(request.getSession(false).getAttribute("Librarian_Id") == null){
-            RequestDispatcher dispatcher = request.getRequestDispatcher("login.html");
-            dispatcher.forward(request,response);
-        }
+
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//        if(request.getSession(false).getAttribute("Librarian_Id") == null){
-//            RequestDispatcher dispatcher = request.getRequestDispatcher("login.html");
-//            dispatcher.forward(request,response);
-//        }
-        String category_name = request.getParameter("category_name");
-        Category category = new Category();
-        category.setCategory_Name(category_name);
-        int status = CategoryDao.addCategory(category);
+
+
+        String jb = Util.jsonRequestHandler(request);
+
+
+        System.out.println("HELLO CAT " + jb);
+//
+        Gson gson = new Gson();
+        Category category = gson.fromJson(String.valueOf(jb), Category.class);
+
+        System.out.println(category.getCategory_Name());
+
+        JsonObject jsonobject = new JsonObject();
         PrintWriter out = response.getWriter();
-        if(status != 0){
-            request.setAttribute("message-type","success");
-            request.setAttribute("message","Category Added ");
+
+        if(category.getCategory_Name().equals("") || category.getCategory_Name().length() < 3){
+            jsonobject.addProperty("message-type","error");
+            jsonobject.addProperty("message","Category Name not valid");
+            out.write(String.valueOf(jsonobject));
+            return;
+        }
+
+        int status = CategoryDao.addCategory(category);
+        if(status > 0){
+//            PrintWriter out = response.getWriter();
+            response.setStatus(200);
+            response.addHeader("Access-Control-Allow-Origin", "*");
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            jsonobject.addProperty("message-type","success");
+            jsonobject.addProperty("message","Category added successfully!");
+            out.write(String.valueOf(jsonobject));
+
         }
         else{
-            request.setAttribute("message-type","error");
-            request.setAttribute("message","Error Occurred, Please try later. ");
+            jsonobject.addProperty("message-type","error");
+            jsonobject.addProperty("message","Some error occured");
+            out.write(String.valueOf(jsonobject));
+            response.sendError(500);
+
         }
-        RequestDispatcher dispatcher = request.getRequestDispatcher("message.jsp");
-        dispatcher.forward(request,response);
     }
 }

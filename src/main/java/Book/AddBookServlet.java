@@ -13,40 +13,61 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.util.Calendar;
 import java.util.List;
 
 public class AddBookServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
-//        if(req.getSession(false).getAttribute("Librarian_Id") == null){
-//            RequestDispatcher dispatcher = req.getRequestDispatcher("login.html");
-//            dispatcher.forward(req,res);
-//        }
-
-//        Handling json request
+//      Handling json request
         String jb = Util.jsonRequestHandler(req);
 
         Gson gson = new Gson();
+//      Json to Java POJO
         Book book = gson.fromJson(String.valueOf(jb), Book.class);
 
+        JsonObject jsonobject = new JsonObject();
+        PrintWriter out = res.getWriter();
+
+//      Checking edge cases
+        int curYear = Calendar.getInstance().get(Calendar.YEAR);
+        if(book.getPublished_year()<=1800 || book.getPublished_year()>curYear){
+            jsonobject.addProperty("message-type","error");
+            jsonobject.addProperty("message","Year not valid");
+            out.write(String.valueOf(jsonobject));
+            return;
+        }
+        if(book.getNos_Available() <= 0 ){
+            jsonobject.addProperty("message-type","error");
+            jsonobject.addProperty("message","Stock cannot be less than 0");
+            out.write(String.valueOf(jsonobject));
+            return;
+        }
+
+
         int status = BookDao.addBook(book);
-//        List<Book> allBook = BookDao.getALlBooks();
-//        req.setAttribute("allBook",allBook);
+
         if(status > 0){
-            PrintWriter out = res.getWriter();
             res.setStatus(200);
             res.addHeader("Access-Control-Allow-Origin", "*");
             res.setContentType("application/json");
             res.setCharacterEncoding("UTF-8");
-//            RequestDispatcher dispatcher = req.getRequestDispatcher("book-list.jsp");
-//            dispatcher.forward(req,res);
+            jsonobject.addProperty("message","Book Added Successfully!");
+            jsonobject.addProperty("message-type","success");
+            out.write(String.valueOf(jsonobject));
+            out.flush();
         }
         else{
             res.sendError(500);
-
         }
 
     }
     protected  void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
+        JsonObject jsonobject = new JsonObject();
+        PrintWriter out = res.getWriter();
+
+        jsonobject.addProperty("message-type","error");
+        jsonobject.addProperty("message","Get method not available");
+        out.write(String.valueOf(jsonobject));
 
     }
 }
