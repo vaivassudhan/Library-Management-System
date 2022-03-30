@@ -15,11 +15,14 @@ public class StudentDao {
         int status = 0 ;
         try{
             Connection con = DBConnection.getConnection();
-            PreparedStatement ps = con.prepareStatement("INSERT INTO Student(Student_Name, Group_Id,Gender,Mobile) VALUES (?,?,?,?);");
+            PreparedStatement ps = con.prepareStatement("INSERT INTO Student(Student_Name, Group_Id,Gender,Mobile, Email, Address, Batch) VALUES (?,?,?,?,?,?,?);");
             ps.setString(1,student.getStudent_Name());
             ps.setInt(2,student.getGroup_id());
             ps.setString(3,student.getGender());
             ps.setString(4,student.getMobile());
+            ps.setString(5,student.getEmail());
+            ps.setString(6,student.getAddress());
+            ps.setInt(7,student.getBatch());
             status = ps.executeUpdate();
 
         } catch (SQLException e) {

@@ -15,6 +15,7 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Objects;
 
 public class AddBookServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
@@ -39,6 +40,18 @@ public class AddBookServlet extends HttpServlet {
         if(book.getNos_Available() <= 0 ){
             jsonobject.addProperty("message-type","error");
             jsonobject.addProperty("message","Stock cannot be less than 0");
+            out.write(String.valueOf(jsonobject));
+            return;
+        }
+        if(Objects.equals(book.getBook_Title(), "")){
+            jsonobject.addProperty("message-type","error");
+            jsonobject.addProperty("message","Invalid Book Name");
+            out.write(String.valueOf(jsonobject));
+            return;
+        }
+        if(Objects.equals(book.getAuthor_Name(), "")){
+            jsonobject.addProperty("message-type","error");
+            jsonobject.addProperty("message","Invalid Author Name");
             out.write(String.valueOf(jsonobject));
             return;
         }

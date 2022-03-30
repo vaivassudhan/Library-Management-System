@@ -1,8 +1,36 @@
 package Student;
 
 public class Student {
-    private int Student_Id,Group_id;
-    private String Student_Name, Gender, Mobile;
+    private int Student_Id,Group_id, Batch;
+    private String Student_Name;
+    private String Gender;
+    private String Mobile;
+    private String Email;
+    private String Address;
+
+    public int getBatch() {
+        return Batch;
+    }
+
+    public void setBatch(int batch) {
+        Batch = batch;
+    }
+
+    public String getEmail() {
+        return Email;
+    }
+
+    public void setEmail(String email) {
+        Email = email;
+    }
+
+    public String getAddress() {
+        return Address;
+    }
+
+    public void setAddress(String address) {
+        Address = address;
+    }
     public int getStudent_Id() {
         return Student_Id;
     }
