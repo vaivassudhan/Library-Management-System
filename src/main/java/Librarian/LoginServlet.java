@@ -13,8 +13,6 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-
-        System.out.println("LOGIN SERVLET ");
         String jb = Util.jsonRequestHandler(request);
 
         JsonObject jsonObject = new JsonParser().parse(jb).getAsJsonObject();
@@ -23,8 +21,6 @@ public class LoginServlet extends HttpServlet {
 
 //        String Librarian_Id = request.getParameter("Librarian_Id");
 //        String Password = request.getParameter("Password");
-        System.out.println("LIBRARIAN ID "+ Librarian_Id);
-        System.out.println("Password "+ Password);
         boolean status = LibrarianDao.validate(Librarian_Id,Password);
 
         JsonObject jsonobject = new JsonObject();
@@ -41,7 +37,6 @@ public class LoginServlet extends HttpServlet {
         else{
             jsonobject.addProperty("error-message","Invalid librarian id or password");
             out.write(String.valueOf(jsonobject));
-            response.sendError(401);
             out.flush();
         }
 //        response.setContentType("text/html");
