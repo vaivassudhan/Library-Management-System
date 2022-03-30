@@ -1,8 +1,13 @@
 package Fine;
 
+import Utils.Util;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 import javax.servlet.*;
 import javax.servlet.http.*;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 public class UpdateFineServlet extends HttpServlet {
     @Override
@@ -12,21 +17,34 @@ public class UpdateFineServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int status = FineDao.updateFine(
-                Integer.parseInt(request.getParameter("Group_Id")),
-                Integer.parseInt(request.getParameter("Per_Day_Amount"))
-        );
+//      Handling json request
+        String jb = Util.jsonRequestHandler(request);
+
+        System.out.println("FINE SERVLET "+ jb);
+        JsonObject jsonObject = new JsonParser().parse(jb).getAsJsonObject();
+
+//      Get Values from json
+        int Group_Id = jsonObject.get("Group_Id").getAsInt();
+        int Fine_per_day = jsonObject.get("Fine_Per_Day").getAsInt();
+
+        System.out.println("UPDATE FINE " + Group_Id);
+        System.out.println("UPDATE FINE " + Fine_per_day);
+
+        int status = FineDao.updateFine(Group_Id,Fine_per_day);
+        JsonObject jsonobject = new JsonObject();
+        PrintWriter out = response.getWriter();
+
+
         if(status != 0 ){
-            request.setAttribute("message-type","success");
-            request.setAttribute("message","Fine Amount Updated Successfully");
-            RequestDispatcher dispatcher = request.getRequestDispatcher("message.jsp");
-            dispatcher.forward(request,response);
+            jsonobject.addProperty("message-type","success");
+            jsonobject.addProperty("message","Fine Updated Successfully!");
+            out.write(String.valueOf(jsonobject));
+
         }
         else{
-            request.setAttribute("message-type","error");
-            request.setAttribute("message","Some Error Occurred");
-            RequestDispatcher dispatcher = request.getRequestDispatcher("message.jsp");
-            dispatcher.forward(request,response);
+            jsonobject.addProperty("message-type","error");
+            jsonobject.addProperty("message","Some Error occurred");
+            out.write(String.valueOf(jsonobject));
         }
     }
 }
