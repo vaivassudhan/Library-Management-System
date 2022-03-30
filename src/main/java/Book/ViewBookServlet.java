@@ -18,7 +18,6 @@ public class ViewBookServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         response.addHeader("Access-Control-Allow-Origin", "*");
         response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
         out.print(bookJson);
         out.flush();
     }

@@ -3,6 +3,15 @@ package Book;
 public class Book {
     private int Book_Id, Nos_Available,Category_Id,Published_year;
     private String Book_Title;
+
+    public String getCategory_name() {
+        return category_name;
+    }
+
+    public void setCategory_name(String category_name) {
+        this.category_name = category_name;
+    }
+
     public String category_name;
     public int getBook_Id() {
         return Book_Id;

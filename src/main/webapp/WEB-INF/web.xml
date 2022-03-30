@@ -191,7 +191,14 @@
         <servlet-name>ViewBorrowServlet</servlet-name>
         <url-pattern>/view-borrow</url-pattern>
     </servlet-mapping>
-
+    <servlet>
+        <servlet-name>FetchBookDetailsServlet</servlet-name>
+        <servlet-class>Borrow_Return.FetchBookDetailsServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>FetchBookDetailsServlet</servlet-name>
+        <url-pattern>/fetch-book-details</url-pattern>
+    </servlet-mapping>
 
     <servlet>
         <servlet-name>ReturnServlet</servlet-name>

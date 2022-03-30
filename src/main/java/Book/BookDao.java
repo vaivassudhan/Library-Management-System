@@ -1,5 +1,6 @@
 package Book;
 
+import Category.CategoryDao;
 import DBConnection.DBConnection;
 
 import java.sql.*;
@@ -129,6 +130,30 @@ public class BookDao {
             e.printStackTrace();
         }
         return allBooks;
+    }
+
+//  get book by id
+    public static Book getBookByID(int Book_Id){
+        Book book = new Book();
+        try{
+            Connection con = DBConnection.getConnection();
+            PreparedStatement ps = con.prepareStatement("SELECT Book_Id,Book_Title,Author_Name,Published_Year,Category_Id,Nos_Available FROM Book WHERE Book_Id = ?");
+            ps.setInt(1,Book_Id);
+            ResultSet result = ps.executeQuery();
+            if(result.next()){
+                book.setBook_Id(result.getInt(1));
+                book.setBook_Title(result.getString(2));
+                book.setAuthor_Name(result.getString(3));
+                book.setPublished_year(result.getInt(4));
+                book.setCategory_Id(result.getInt(5));
+                book.setNos_Available(result.getInt(6));
+            }
+            con.close();
+            book.setCategory_name(CategoryDao.getCategoryNameById(book.getCategory_Id()));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return book;
     }
 
 }

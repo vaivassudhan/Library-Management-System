@@ -3,11 +3,15 @@ package Borrow_Return;
 import Book.BookDao;
 import DBConnection.DBConnection;
 import Fine.FineDao;
+import Group_days.GroupDays;
+import Group_days.GroupDaysDAO;
+import Student.StudentDao;
 
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class BorrowDao {
@@ -28,12 +32,7 @@ public class BorrowDao {
             }
             if(nos_available >= 1){
 
-//              Insert into books table query, prepare statement with values from passed book object
-
-
-//                PreparedStatement ps = con.prepareStatement("INSERT INTO Borrow(Book_Id, Student_Id, Issued_By, Borrow_Date) VALUES (?,?,?,?)");
-
-                String sql = "INSERT INTO Borrow(Book_Id, Student_Id, Issued_By, Borrow_Date) VALUES (?,?,?,?)";
+                String sql = "INSERT INTO Borrow(Book_Id, Student_Id, Issued_By, Borrow_Date, DueDate) VALUES (?,?,?,?,?)";
                 PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
                 ps.setInt(1,borrow.getBook_Id());
@@ -43,13 +42,22 @@ public class BorrowDao {
                 long millis=System.currentTimeMillis();
                 java.sql.Date cur_date=new java.sql.Date(millis);
                 ps.setDate(4,cur_date);
+
+//              Get no of days
+                int no_of_days = StudentDao.getDaysBySid(borrow.getStudent_Id());
+                Calendar c = Calendar.getInstance();
+                c.setTime(cur_date); // Using today's date
+                c.add(Calendar.DATE,no_of_days);
+                long added_millis = c.getTimeInMillis();
+                java.sql.Date due_date = new java.sql.Date(added_millis);
+                ps.setDate(5,due_date);
+
 //              Executing the query
                 ps.executeUpdate();
                 ResultSet rs = ps.getGeneratedKeys();
                 rs.next();
                 borrow_id = rs.getInt(1);
-//                System.out.println("Borrow Id "+rs.getInt(1));
-//                status = ps.executeUpdate();
+
                 if(rs.getInt(1) != 0  ){
                     ps = con.prepareStatement("UPDATE Book SET Nos_Available = Nos_Available - 1 WHERE Book_Id = ? ");
                     ps.setInt(1,borrow.getBook_Id());

@@ -2,6 +2,7 @@ package Student;
 
 import Category.Category;
 import DBConnection.DBConnection;
+import Group_days.GroupDaysDAO;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -51,5 +52,47 @@ public class StudentDao {
             e.printStackTrace();
         }
         return allStudent;
+    }
+
+//  Get Student by ID
+    public static Student getStudentById(int student_id){
+        Student student = new Student();
+        try{
+            Connection con = DBConnection.getConnection();
+            PreparedStatement ps = con.prepareStatement("SELECT Student_Id, Student_Name, Mobile, Group_Id FROM Student WHERE Student_Id = ?");
+            ps.setInt(1,student_id);
+            ResultSet result = ps.executeQuery();
+            if(result.next()){
+                student.setStudent_Id(result.getInt(1));
+                student.setStudent_Name(result.getString(2));
+                student.setMobile(result.getString(3));
+                student.setGroup_id(result.getInt(4));
+            }
+            con.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return student;
+    }
+
+//  get no of days for student id
+    public static int getDaysBySid(int student_id){
+        int no_days = 0;
+        int group_id = 0;
+        try{
+            Connection con = DBConnection.getConnection();
+            PreparedStatement ps = con.prepareStatement("SELECT Group_Id FROM Student WHERE Student_Id =?");
+            ps.setInt(1,student_id);
+            ResultSet result = ps.executeQuery();
+            if(result.next()){
+                group_id = result.getInt(1);
+            }
+            no_days = GroupDaysDAO.getDaysById(group_id);
+            con.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return no_days;
     }
 }

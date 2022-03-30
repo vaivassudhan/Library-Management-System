@@ -22,10 +22,6 @@ public class AddCategoryServlet extends HttpServlet {
 
 
         String jb = Util.jsonRequestHandler(request);
-
-
-        System.out.println("HELLO CAT " + jb);
-//
         Gson gson = new Gson();
         Category category = gson.fromJson(String.valueOf(jb), Category.class);
 
