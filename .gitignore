@@ -2,3 +2,13 @@
 /target/classes/
 target/
 target/**
+target/Library-Management-System-1.0-SNAPSHOT/WEB-INF/classes/Book/AddBookServlet.class
+target/Library-Management-System-1.0-SNAPSHOT/WEB-INF/classes/Book/UpdateStockServlet.class
+target/Library-Management-System-1.0-SNAPSHOT/WEB-INF/classes/Book/ViewBookServlet.class
+target/Library-Management-System-1.0-SNAPSHOT/WEB-INF/classes/Borrow_Return/Borrow.class
+target/Library-Management-System-1.0-SNAPSHOT/WEB-INF/classes/Librarian/LoginServlet.class
+target/classes/Book/AddBookServlet.class
+target/classes/Book/UpdateStockServlet.class
+target/classes/Book/ViewBookServlet.class
+target/classes/Borrow_Return/Borrow.class
+target/classes/Librarian/LoginServlet.class
