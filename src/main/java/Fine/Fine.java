@@ -3,6 +3,7 @@ package Fine;
 public class Fine {
     private int Group_Id;
     private float Fine_Per_Day;
+    private float Damage_Fine;
 
     public float getDamage_Fine() {
         return Damage_Fine;
@@ -12,7 +13,7 @@ public class Fine {
         Damage_Fine = damage_Fine;
     }
 
-    private float Damage_Fine;
+
 
     public int getGroup_Id() {
         return Group_Id;
