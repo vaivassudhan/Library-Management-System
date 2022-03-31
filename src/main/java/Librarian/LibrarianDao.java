@@ -17,10 +17,6 @@ public class LibrarianDao {
             ps.setString(2,Password);
             ResultSet result = ps.executeQuery();
             status = result.next();
-//            if(status){
-//                Librarian librarian = new Librarian();
-//                librarian
-//            }
             con.close();
 
         } catch (SQLException e) {
@@ -43,6 +39,7 @@ public class LibrarianDao {
                 librarian.setName(result.getString(2));
                 librarian.setRole(result.getInt(3));
             }
+            con.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }

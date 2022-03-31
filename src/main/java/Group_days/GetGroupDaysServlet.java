@@ -1,5 +1,6 @@
 package Group_days;
 
+import Utils.Util;
 import com.google.gson.Gson;
 
 import javax.servlet.*;
@@ -11,13 +12,17 @@ import java.util.List;
 public class GetGroupDaysServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//        if(request.getSession().getAttribute("Librarian_Id") == null){
-//            RequestDispatcher dispatcher = request.getRequestDispatcher("login.html");
-//            dispatcher.forward(request,response);
-//        }
+        PrintWriter out = response.getWriter();
+
+//      Read Token From Response Header
+        String token = request.getHeader("Authorization").split(" ")[1];
+//      Auth Check
+        if(!Util.isAdmin(token)){
+            out.write(Util.createErrorJson("UnAuthorized"));
+            response.setStatus(401);
+        }
         List<GroupDays> allGroups = GroupDaysDAO.getAllGroups();
         String groupJson = new Gson().toJson(allGroups);
-        PrintWriter out = response.getWriter();
         response.addHeader("Access-Control-Allow-Origin", "*");
         response.setContentType("application/json");
         out.print(groupJson);
@@ -26,6 +31,7 @@ public class GetGroupDaysServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        response.getWriter().write(Util.createErrorJson("POST not available"));
+        response.setStatus(401);
     }
 }

@@ -17,30 +17,30 @@ public class UpdateDaysServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        GroupDays groupDays = new GroupDays();
+        PrintWriter out = response.getWriter();
+
+//      Read Token From Response Header
+        String token = request.getHeader("Authorization").split(" ")[1];
+//      Auth Check
+        if(!Util.isAdmin(token)){
+            out.write(Util.createErrorJson("UnAuthorized"));
+            response.setStatus(401);
+        }
 //      Handling json request
         String jb = Util.jsonRequestHandler(request);
-        System.out.println("HELLO " + jb);
 
         JsonObject jsonObject = new JsonParser().parse(jb).getAsJsonObject();
 
         int group_id = jsonObject.get("Group_Id").getAsInt();
         int days = jsonObject.get("Days").getAsInt();
 
-
         int status = GroupDaysDAO.updateGroup(group_id,days);
-        JsonObject jsonobject = new JsonObject();
-        PrintWriter out = response.getWriter();
         if(status != 0 ){
-            jsonobject.addProperty("message-type","success");
-            jsonobject.addProperty("message","Group Updated Successfully");
-            out.write(String.valueOf(jsonobject));
+            out.write(Util.successMessageJson("Group updated successfully"));
             out.flush();
         }
         else{
-            jsonobject.addProperty("message-type","error");
-            jsonobject.addProperty("message","Error occurred");
-            out.write(String.valueOf(jsonobject));
+            out.write(Util.createErrorJson("Internal error occurred"));
             out.flush();
         }
     }
