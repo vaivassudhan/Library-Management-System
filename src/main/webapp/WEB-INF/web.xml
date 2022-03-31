@@ -134,7 +134,14 @@
         <servlet-name>SearchByAuthorServlet</servlet-name>
         <url-pattern>/search-by-author</url-pattern>
     </servlet-mapping>
-
+    <servlet>
+        <servlet-name>SearchByTitleServlet</servlet-name>
+        <servlet-class>Book.SearchByTitleServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SearchByTitleServlet</servlet-name>
+        <url-pattern>/search-by-title</url-pattern>
+    </servlet-mapping>
 <!--    Librarian Servlets -->
     
     <servlet>

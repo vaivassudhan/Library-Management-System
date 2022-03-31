@@ -14,12 +14,13 @@ public class BookDao {
         try {
             Connection con = DBConnection.getConnection();
 //          Insert into books table query, prepare statement with values from passed book object
-            PreparedStatement ps = con.prepareStatement("INSERT INTO Book(Book_Title, Author_Name,Category_Id, Nos_Available, Published_Year) VALUES (?,?,?,?,?)");
+            PreparedStatement ps = con.prepareStatement("INSERT INTO Book(Book_Title, Author_Name,Category_Id, Nos_Available, Published_Year, ISBN) VALUES (?,?,?,?,?,?)");
             ps.setString(1,book.getBook_Title());
             ps.setString(2,book.getAuthor_Name());
             ps.setInt(3,book.getCategory_Id());
             ps.setInt(4,book.getNos_Available());
             ps.setInt(5,book.getPublished_year());
+            ps.setString(6, book.getISBN());
 //          Executing the query
             status = ps.executeUpdate();
             con.close();
@@ -34,7 +35,7 @@ public class BookDao {
         List<Book> allBooks = new ArrayList<>();
         try{
             Connection con = DBConnection.getConnection();
-            PreparedStatement ps = con.prepareStatement("SELECT b.Book_Id,b.Book_Title,b.Author_Name,b.Category_Id,b.Nos_Available, b.Published_Year,c.Category_Name FROM Book b JOIN Category c ON b.Category_Id = c.Category_Id");
+            PreparedStatement ps = con.prepareStatement("SELECT b.Book_Id,b.Book_Title,b.Author_Name,b.Category_Id,b.Nos_Available, b.Published_Year,c.Category_Name, b.ISBN FROM Book b JOIN Category c ON b.Category_Id = c.Category_Id");
             ResultSet result = ps.executeQuery();
             while(result.next()){
                 Book book = new Book();
@@ -45,6 +46,7 @@ public class BookDao {
                 book.setNos_Available(result.getInt(5));
                 book.setPublished_year(result.getInt(6));
                 book.category_name = result.getString(7);
+                book.setISBN(result.getString(8));
                 allBooks.add(book);
             }
             con.close();
@@ -110,7 +112,7 @@ public class BookDao {
         List<Book> allBooks = new ArrayList<Book>();
         try{
             Connection con = DBConnection.getConnection();
-            PreparedStatement ps = con.prepareStatement("SELECT b.Book_Id,b.Book_Title,b.Author_Name,b.Category_Id,b.Nos_Available, b.Published_Year,c.Category_Name FROM Book b JOIN Category c ON b.Category_Id = c.Category_Id WHERE b.Category_Id = ?");
+            PreparedStatement ps = con.prepareStatement("SELECT b.Book_Id,b.Book_Title,b.Author_Name,b.Category_Id,b.Nos_Available, b.Published_Year,c.Category_Name, b.ISBN FROM Book b JOIN Category c ON b.Category_Id = c.Category_Id WHERE b.Category_Id = ?");
             ps.setInt(1,Category_Id);
             ResultSet result = ps.executeQuery();
             while(result.next()){
@@ -122,6 +124,7 @@ public class BookDao {
                 book.setNos_Available(result.getInt(5));
                 book.setPublished_year(result.getInt(6));
                 book.category_name = result.getString(7);
+                book.setISBN(result.getString((8)));
                 allBooks.add(book);
             }
             con.close();
@@ -136,7 +139,7 @@ public class BookDao {
         Book book = new Book();
         try{
             Connection con = DBConnection.getConnection();
-            PreparedStatement ps = con.prepareStatement("SELECT Book_Id,Book_Title,Author_Name,Published_Year,Category_Id,Nos_Available FROM Book WHERE Book_Id = ?");
+            PreparedStatement ps = con.prepareStatement("SELECT Book_Id,Book_Title,Author_Name,Published_Year,Category_Id,Nos_Available,ISBN FROM Book WHERE Book_Id = ?");
             ps.setInt(1,Book_Id);
             ResultSet result = ps.executeQuery();
             if(result.next()){
@@ -146,6 +149,7 @@ public class BookDao {
                 book.setPublished_year(result.getInt(4));
                 book.setCategory_Id(result.getInt(5));
                 book.setNos_Available(result.getInt(6));
+                book.setISBN(result.getString(7));
             }
             con.close();
             book.setCategory_name(CategoryDao.getCategoryNameById(book.getCategory_Id()));
@@ -162,7 +166,7 @@ public class BookDao {
         {
             String upper_author_name = Author_Name.toUpperCase();
             Connection con = DBConnection.getConnection();
-            PreparedStatement ps = con.prepareStatement("SELECT b.Book_Id,b.Book_Title,b.Author_Name,b.Category_Id,b.Nos_Available, b.Published_Year,c.Category_Name FROM Book b JOIN Category c ON b.Category_Id = c.Category_Id WHERE upper(b.Author_Name) LIKE ?");
+            PreparedStatement ps = con.prepareStatement("SELECT b.Book_Id,b.Book_Title,b.Author_Name,b.Category_Id,b.Nos_Available, b.Published_Year,c.Category_Name,b.ISBN FROM Book b JOIN Category c ON b.Category_Id = c.Category_Id WHERE upper(b.Author_Name) LIKE ?");
             ps.setString(1,"%"+upper_author_name+"%");
 
             ResultSet result = ps.executeQuery();
@@ -175,12 +179,41 @@ public class BookDao {
                 book.setNos_Available(result.getInt(5));
                 book.setPublished_year(result.getInt(6));
                 book.category_name = result.getString(7);
+                book.setISBN(result.getString(8));
                 allBooks.add(book);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return allBooks;
+    }
+    public static List<Book> searchByTitle(String Book_Title){
+        List<Book> allBooks = new ArrayList<Book>();
+        try
+        {
+            String upper_book_title = Book_Title.toUpperCase();
+            Connection con = DBConnection.getConnection();
+            PreparedStatement ps = con.prepareStatement("SELECT b.Book_Id,b.Book_Title,b.Author_Name,b.Category_Id,b.Nos_Available, b.Published_Year,c.Category_Name,b.ISBN FROM Book b JOIN Category c ON b.Category_Id = c.Category_Id WHERE upper(b.Book_Title) LIKE ?");
+            ps.setString(1,"%"+upper_book_title+"%");
+
+            ResultSet result = ps.executeQuery();
+            while(result.next()){
+                Book book = new Book();
+                book.setBook_Id(result.getInt(1));
+                book.setBook_Title(result.getString(2));
+                book.setAuthor_Name(result.getString(3));
+                book.setCategory_Id(result.getInt(4));
+                book.setNos_Available(result.getInt(5));
+                book.setPublished_year(result.getInt(6));
+                book.category_name = result.getString(7);
+                book.setISBN(result.getString(8));
+                allBooks.add(book);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return allBooks;
+
     }
 
 }
