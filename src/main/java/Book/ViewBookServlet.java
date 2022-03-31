@@ -1,5 +1,6 @@
 package Book;
 
+import Utils.Util;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
@@ -24,10 +25,7 @@ public class ViewBookServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        JsonObject jsonobject = new JsonObject();
         PrintWriter out = response.getWriter();
-        jsonobject.addProperty("message-type","error");
-        jsonobject.addProperty("message","Post method not available");
-        out.write(String.valueOf(jsonobject));
+        out.write(Util.createErrorJson("POST not available"));
     }
 }

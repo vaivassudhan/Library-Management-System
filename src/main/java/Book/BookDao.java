@@ -63,7 +63,6 @@ public class BookDao {
             PreparedStatement ps = con.prepareStatement("UPDATE Book SET Nos_Available = ? Where Book_Id = ? ; ");
             ps.setInt(1,stock);
             ps.setInt(2,book_id);
-
             status = ps.executeUpdate();
             con.close();
         } catch (SQLException e) {

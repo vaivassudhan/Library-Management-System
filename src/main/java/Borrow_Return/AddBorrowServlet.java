@@ -15,29 +15,36 @@ import java.util.Objects;
 public class AddBorrowServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        PrintWriter out = response.getWriter();
+        out.write(Util.createErrorJson("GET not available"));
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        PrintWriter out = response.getWriter();
+//      Read Token From Response Header
+        String token = request.getHeader("Authorization").split(" ")[1];
+//      Auth Check
+        if(!Util.verifyAuth(token)){
+            out.write(Util.createErrorJson("UnAuthorized"));
+            response.setStatus(401);
+        }
 
+//      Handle JSON Request
         String jb = Util.jsonRequestHandler(request);
         JsonObject jsonObject = new JsonParser().parse(jb).getAsJsonObject();
-        System.out.println("CEHCK ADD Borrow Servlet" + jsonObject);
-
 
         int Book_Id = jsonObject.get("Book_Id").getAsInt();
         int Student_Id = jsonObject.get("Student_Id").getAsInt();
         String Issued_By = jsonObject.get("Issued_By").getAsString();
 
-        System.out.println("CEHCK ADD Borrow Servlet");
-        JsonObject jsonobject = new JsonObject();
-        PrintWriter out = response.getWriter();
-
+//      Check Edge Cases
         if(Objects.equals(Issued_By, "")){
-            jsonobject.addProperty("message-type","error");
-            jsonobject.addProperty("message","Invalid librarian");
-            out.write(String.valueOf(jsonobject));
+            out.write(Util.createErrorJson("Invalid librarian"));
+            return;
+        }
+        if(Book_Id == 0 || Student_Id == 0){
+            out.write(Util.createErrorJson("Invalid librarian"));
             return;
         }
 
@@ -46,21 +53,12 @@ public class AddBorrowServlet extends HttpServlet {
         borrow.setStudent_Id(Student_Id);
         borrow.setIssued_By(Issued_By);
 
-        System.out.println("check Borrow servlet");
         int borrow_id = BorrowDao.borrowBook(borrow);
-
-
         if(borrow_id == 0){
-            jsonobject.addProperty("message-type","error");
-            jsonobject.addProperty("message","Error Occurred.");
-            out.write(String.valueOf(jsonobject));
-            return;
+            out.write(Util.createErrorJson("Error Occurred"));
         }
-        if(borrow_id != 0 ){
-            jsonobject.addProperty("message-type","success");
-            jsonobject.addProperty("message","Book Issued Successfully. Borrow ID is " + borrow_id);
-            out.write(String.valueOf(jsonobject));
-            return;
+        else{
+            out.write(Util.successMessageJson("Book Issued Successfully. Borrow ID is " + borrow_id));
         }
 
     }

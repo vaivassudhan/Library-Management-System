@@ -259,6 +259,14 @@
         <servlet-name>GetFineServlet</servlet-name>
         <servlet-class>Fine.GetFineServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>TokenTestServlet</servlet-name>
+        <servlet-class>Librarian.TokenTestServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>TokenTestServlet</servlet-name>
+        <url-pattern>/token-test</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>GetFineServlet</servlet-name>
         <url-pattern>/get-fine</url-pattern>

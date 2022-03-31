@@ -1,9 +1,6 @@
 package Book;
 
-import Borrow_Return.Borrow;
-import Borrow_Return.BorrowDao;
 import Utils.Util;
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -15,16 +12,22 @@ import java.io.PrintWriter;
 public class UpdateStockServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        JsonObject jsonobject = new JsonObject();
         PrintWriter out = response.getWriter();
-
-        jsonobject.addProperty("message-type","error");
-        jsonobject.addProperty("message","Get method not available");
-        out.write(String.valueOf(jsonobject));
+        out.write(Util.createErrorJson("GET not available"));
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        PrintWriter out = response.getWriter();
+//      Read Token From Response Header
+        String token = request.getHeader("Authorization").split(" ")[1];
+//      Auth Check
+        if(!Util.verifyAuth(token)){
+            out.write(Util.createErrorJson("UnAuthorized"));
+            response.setStatus(401);
+        }
+
 //      Handling json request
         String jb = Util.jsonRequestHandler(request);
 
@@ -34,25 +37,18 @@ public class UpdateStockServlet extends HttpServlet {
         int Book_Id = jsonObject.get("Book_Id").getAsInt();
         int Nos_Available = jsonObject.get("Nos_Available").getAsInt();
 
-        JsonObject jsonobject = new JsonObject();
-        PrintWriter out = response.getWriter();
-
+//      Check Edge cases
         if(Nos_Available < 0 ){
-            jsonobject.addProperty("message-type","error");
-            jsonobject.addProperty("message","Stock not valid");
-            out.write(String.valueOf(jsonobject));
+            out.write(Util.createErrorJson("Stock not valid"));
             return;
         }
 
         int status = BookDao.updateBookStock( Book_Id , Nos_Available );
         if(status != 0){
-            jsonobject.addProperty("message-type","success");
-            jsonobject.addProperty("message","Stock Updated Successfully!");
+            out.write(Util.successMessageJson("Stock updated successfully!"));
         }
         else{
-            jsonobject.addProperty("message-type","error");
-            jsonobject.addProperty("message","Some Error Occurred");
+            out.write(Util.createErrorJson("Some Error Occurred!"));
         }
-        out.write(String.valueOf(jsonobject));
     }
 }

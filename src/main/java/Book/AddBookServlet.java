@@ -2,60 +2,51 @@ package Book;
 
 import Utils.Util;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.Calendar;
-import java.util.List;
 import java.util.Objects;
 
 public class AddBookServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
-//      Handling json request
-        String jb = Util.jsonRequestHandler(req);
+        PrintWriter out = res.getWriter();
 
+//      Read Token From Response Header
+        String token = req.getHeader("Authorization").split(" ")[1];
+//      Auth Check
+        if(!Util.verifyAuth(token)){
+            out.write(Util.createErrorJson("UnAuthorized"));
+            res.setStatus(401);
+        }
+
+//      Handling json request and converting to Java POJO
+        String jb = Util.jsonRequestHandler(req);
         Gson gson = new Gson();
-//      Json to Java POJO
         Book book = gson.fromJson(String.valueOf(jb), Book.class);
 
-        JsonObject jsonobject = new JsonObject();
-        PrintWriter out = res.getWriter();
 
 //      Checking edge cases
         int curYear = Calendar.getInstance().get(Calendar.YEAR);
         if(book.getPublished_year()<=1800 || book.getPublished_year()>curYear){
-            jsonobject.addProperty("message-type","error");
-            jsonobject.addProperty("message","Year not valid");
-            out.write(String.valueOf(jsonobject));
+            out.write(Util.createErrorJson("Year not valid"));
             return;
         }
         if(book.getNos_Available() <= 0 ){
-            jsonobject.addProperty("message-type","error");
-            jsonobject.addProperty("message","Stock cannot be less than 0");
-            out.write(String.valueOf(jsonobject));
+            out.write(Util.createErrorJson("Stock cannot be less than 0"));
             return;
         }
-        if(Objects.equals(book.getBook_Title(), "")){
-            jsonobject.addProperty("message-type","error");
-            jsonobject.addProperty("message","Invalid Book Name");
-            out.write(String.valueOf(jsonobject));
+        if(Objects.equals(book.getBook_Title(), "") || book.getBook_Title().length() < 3){
+            out.write(Util.createErrorJson("Invalid Book Name"));
             return;
         }
-        if(Objects.equals(book.getAuthor_Name(), "")){
-            jsonobject.addProperty("message-type","error");
-            jsonobject.addProperty("message","Invalid Author Name");
-            out.write(String.valueOf(jsonobject));
+        if(Objects.equals(book.getAuthor_Name(), "") || book.getAuthor_Name().length() < 3){
+            out.write(Util.createErrorJson("Invalid Author Name"));
             return;
         }
-
 
         int status = BookDao.addBook(book);
 
@@ -64,9 +55,7 @@ public class AddBookServlet extends HttpServlet {
             res.addHeader("Access-Control-Allow-Origin", "*");
             res.setContentType("application/json");
             res.setCharacterEncoding("UTF-8");
-            jsonobject.addProperty("message","Book Added Successfully!");
-            jsonobject.addProperty("message-type","success");
-            out.write(String.valueOf(jsonobject));
+            out.write(Util.successMessageJson("Book added successfully!"));
             out.flush();
         }
         else{
@@ -75,12 +64,9 @@ public class AddBookServlet extends HttpServlet {
 
     }
     protected  void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
-        JsonObject jsonobject = new JsonObject();
         PrintWriter out = res.getWriter();
-
-        jsonobject.addProperty("message-type","error");
-        jsonobject.addProperty("message","Get method not available");
-        out.write(String.valueOf(jsonobject));
+        res.setStatus(500);
+        out.write(Util.createErrorJson("Get method not available"));
 
     }
 }
