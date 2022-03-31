@@ -110,6 +110,7 @@ public class StudentDao {
             ps.setInt(1,batch);
 
             status = ps.executeUpdate();
+            System.out.println("STATUS " + status);
             con.close();
 
         } catch (SQLException e) {

@@ -155,4 +155,32 @@ public class BookDao {
         return book;
     }
 
+//   function to find books of author
+    public static List<Book> searchByAuthor(String Author_Name){
+        List<Book> allBooks = new ArrayList<Book>();
+        try
+        {
+            String upper_author_name = Author_Name.toUpperCase();
+            Connection con = DBConnection.getConnection();
+            PreparedStatement ps = con.prepareStatement("SELECT b.Book_Id,b.Book_Title,b.Author_Name,b.Category_Id,b.Nos_Available, b.Published_Year,c.Category_Name FROM Book b JOIN Category c ON b.Category_Id = c.Category_Id WHERE upper(b.Author_Name) LIKE ?");
+            ps.setString(1,"%"+upper_author_name+"%");
+
+            ResultSet result = ps.executeQuery();
+            while(result.next()){
+                Book book = new Book();
+                book.setBook_Id(result.getInt(1));
+                book.setBook_Title(result.getString(2));
+                book.setAuthor_Name(result.getString(3));
+                book.setCategory_Id(result.getInt(4));
+                book.setNos_Available(result.getInt(5));
+                book.setPublished_year(result.getInt(6));
+                book.category_name = result.getString(7);
+                allBooks.add(book);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return allBooks;
+    }
+
 }

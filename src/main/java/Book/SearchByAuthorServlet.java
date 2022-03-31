@@ -1,6 +1,5 @@
 package Book;
 
-import Category.CategoryDao;
 import Utils.Util;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -12,7 +11,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
-public class SearchByCategoryServlet extends HttpServlet {
+public class SearchByAuthorServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -33,13 +32,12 @@ public class SearchByCategoryServlet extends HttpServlet {
         String jb = Util.jsonRequestHandler(request);
         JsonObject jsonObject = new JsonParser().parse(jb).getAsJsonObject();
 
-        int Category_Id = jsonObject.get("Category_Id").getAsInt();
-        List<Book> allBook= BookDao.searchByCategory(Category_Id);
+        String Author_Name = jsonObject.get("Author_Name").getAsString();
+        List<Book> allBook = BookDao.searchByAuthor(Author_Name);
         String bookJson = new Gson().toJson(allBook);
         response.addHeader("Access-Control-Allow-Origin", "*");
         response.setContentType("application/json");
-        out.write(bookJson);
+        out.print(bookJson);
         out.flush();
-
     }
 }

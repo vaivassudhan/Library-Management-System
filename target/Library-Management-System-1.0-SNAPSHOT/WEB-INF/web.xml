@@ -126,6 +126,14 @@
         <servlet-name>UpdateStockServlet</servlet-name>
         <url-pattern>/update-stock</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>SearchByAuthorServlet</servlet-name>
+        <servlet-class>Book.SearchByAuthorServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SearchByAuthorServlet</servlet-name>
+        <url-pattern>/search-by-author</url-pattern>
+    </servlet-mapping>
 
 <!--    Librarian Servlets -->
     
@@ -171,6 +179,14 @@
     <servlet-mapping>
         <servlet-name>ViewStudentServlet</servlet-name>
         <url-pattern>/view-student</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>DeleteStudentBatchServlet</servlet-name>
+        <servlet-class>Student.DeleteStudentBatchServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DeleteStudentBatchServlet</servlet-name>
+        <url-pattern>/delete-student-batch</url-pattern>
     </servlet-mapping>
 
 <!--    Borrow_Return Servlets-->
