@@ -44,7 +44,6 @@ public class LoginServlet extends HttpServlet {
 
             String token = "";
             try {
-                System.out.println("LOGIN SERVLET "+ librarian.getRole());
                 jwtPayload.put("Librarian_Id",librarian.getLibrarian_Id() );
                 jwtPayload.put("Role", String.valueOf(librarian.getRole()));
                 LocalDateTime ldt = LocalDateTime.now().plusDays(EXPIRY_DAYS);

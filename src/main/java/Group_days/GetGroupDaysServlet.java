@@ -17,7 +17,7 @@ public class GetGroupDaysServlet extends HttpServlet {
 //      Read Token From Response Header
         String token = request.getHeader("Authorization").split(" ")[1];
 //      Auth Check
-        if(!Util.isAdmin(token)){
+        if(!Util.verifyAuth(token)){
             out.write(Util.createErrorJson("UnAuthorized"));
             response.setStatus(401);
         }
