@@ -17,11 +17,22 @@ import java.io.PrintWriter;
 public class FetchBookDetailsServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        PrintWriter out = response.getWriter();
+        out.write(Util.createErrorJson("GET not available"));
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        PrintWriter out = response.getWriter();
+
+//      Read Token From Response Header
+        String token = request.getHeader("Authorization").split(" ")[1];
+//      Auth Check
+        if(!Util.verifyAuth(token)){
+            out.write(Util.createErrorJson("UnAuthorized"));
+            response.setStatus(401);
+        }
+
         String jb = Util.jsonRequestHandler(request);
 
         JsonObject jsonObject = new JsonParser().parse(jb).getAsJsonObject();
@@ -30,9 +41,6 @@ public class FetchBookDetailsServlet extends HttpServlet {
         int Book_Id = jsonObject.get("Book_Id").getAsInt();
         int Student_Id = jsonObject.get("Student_Id").getAsInt();
 
-        System.out.println("CHECK Fetch");
-        System.out.println(Book_Id);
-
         Book book = BookDao.getBookByID(Book_Id);
         Student student = StudentDao.getStudentById(Student_Id);
 
@@ -40,9 +48,8 @@ public class FetchBookDetailsServlet extends HttpServlet {
         String bookJson = new Gson().toJson(book);
         String studentJSon = new Gson().toJson(student);
 
+//      Combining JSON into array
         String bothJson = "["+bookJson+","+studentJSon+"]";
-
-        PrintWriter out = response.getWriter();
         response.addHeader("Access-Control-Allow-Origin", "*");
         response.setContentType("application/json");
         out.print(bothJson);

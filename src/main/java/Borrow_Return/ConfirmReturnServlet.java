@@ -14,35 +14,35 @@ import java.io.PrintWriter;
 public class ConfirmReturnServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        PrintWriter out = response.getWriter();
+        out.write(Util.createErrorJson("GET not available"));
 
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        //      Handling json request
+
+        PrintWriter out = response.getWriter();
+
+//      Read Token From Response Header
+        String token = request.getHeader("Authorization").split(" ")[1];
+//      Auth Check
+        if(!Util.verifyAuth(token)){
+            out.write(Util.createErrorJson("UnAuthorized"));
+            response.setStatus(401);
+        }
+//      Handling json request
         String jb = Util.jsonRequestHandler(request);
         Gson gson = new Gson();
 //      Json to Java POJO
         Borrow borrow = gson.fromJson(String.valueOf(jb), Borrow.class);
 
-        System.out.println(borrow.getBorrow_Id());
-
-        JsonObject jsonobject = new JsonObject();
-        PrintWriter out = response.getWriter();
-
-
         int status = BorrowDao.confirmReturn(borrow);
         if(status != 0){
-            jsonobject.addProperty("message-type","success");
-            jsonobject.addProperty("message","Book Returned Successfully! ");
-            out.write(String.valueOf(jsonobject));
-            return;
+            out.write(Util.successMessageJson("Book Returned successfully!"));
         }
         else{
-            jsonobject.addProperty("message-type","error");
-            jsonobject.addProperty("message","Error Occurred ");
-            out.write(String.valueOf(jsonobject));
+            out.write(Util.createErrorJson("Error Occurred "));
         }
     }
 }

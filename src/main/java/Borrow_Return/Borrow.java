@@ -9,6 +9,9 @@ public class Borrow {
     private String Issued_By;
     private Float Fine_Paid;
     private Date DueDate;
+    //    Additional fields for easy access
+    private String Book_Name , Student_Name;
+    private int Group_Id;
 
     public Date getDueDate() {
         return DueDate;
@@ -17,10 +20,6 @@ public class Borrow {
     public void setDueDate(Date dueDate) {
         DueDate = dueDate;
     }
-
-    //    Additional fields for easy access
-    private String Book_Name , Student_Name;
-    private int Group_Id;
 
     public int getGroup_Id() {
         return Group_Id;
@@ -37,7 +36,6 @@ public class Borrow {
     public void setIssued_By(String issued_By) {
         Issued_By = issued_By;
     }
-
 
     public int getBorrow_Id() {
         return Borrow_Id;
@@ -87,10 +85,7 @@ public class Borrow {
         Fine_Paid = fine_Paid;
     }
 
-    public String getBook_Name() {
-
-        return Book_Name;
-    }
+    public String getBook_Name() { return Book_Name; }
 
     public void setBook_Name(String book_Name) {
         Book_Name = book_Name;

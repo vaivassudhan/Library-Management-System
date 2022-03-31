@@ -14,44 +14,42 @@ import java.io.PrintWriter;
 public class AddCategoryServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        PrintWriter out = response.getWriter();
+        out.write(Util.createErrorJson("GET not available"));
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+        PrintWriter out = response.getWriter();
 
+//      Read Token From Response Header
+        String token = request.getHeader("Authorization").split(" ")[1];
+//      Auth Check
+        if(!Util.verifyAuth(token)){
+            out.write(Util.createErrorJson("UnAuthorized"));
+            response.setStatus(401);
+        }
         String jb = Util.jsonRequestHandler(request);
         Gson gson = new Gson();
         Category category = gson.fromJson(String.valueOf(jb), Category.class);
 
-
-        JsonObject jsonobject = new JsonObject();
-        PrintWriter out = response.getWriter();
-
         if(category.getCategory_Name().equals("") || category.getCategory_Name().length() < 3){
-            jsonobject.addProperty("message-type","error");
-            jsonobject.addProperty("message","Category Name not valid");
-            out.write(String.valueOf(jsonobject));
+            out.write(Util.createErrorJson("Category name is not valid"));
             return;
         }
 
         int status = CategoryDao.addCategory(category);
         if(status > 0){
-//            PrintWriter out = response.getWriter();
             response.setStatus(200);
             response.addHeader("Access-Control-Allow-Origin", "*");
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
-            jsonobject.addProperty("message-type","success");
-            jsonobject.addProperty("message","Category added successfully!");
-            out.write(String.valueOf(jsonobject));
+            out.write(Util.successMessageJson("Category added successfully!"));
 
         }
         else{
-            jsonobject.addProperty("message-type","error");
-            jsonobject.addProperty("message","Some error occured");
-            out.write(String.valueOf(jsonobject));
+            out.write(Util.createErrorJson("Some error occurred"));
             response.sendError(500);
 
         }

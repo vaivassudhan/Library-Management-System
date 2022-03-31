@@ -2,14 +2,9 @@ package Borrow_Return;
 
 import Book.BookDao;
 import DBConnection.DBConnection;
-import Fine.FineDao;
-import Group_days.GroupDays;
-import Group_days.GroupDaysDAO;
 import Student.StudentDao;
 
 import java.sql.*;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -59,6 +54,7 @@ public class BorrowDao {
                 borrow_id = rs.getInt(1);
 
                 if(rs.getInt(1) != 0  ){
+//                  Reduce Book Stock in Book Table
                     ps = con.prepareStatement("UPDATE Book SET Nos_Available = Nos_Available - 1 WHERE Book_Id = ? ");
                     ps.setInt(1,borrow.getBook_Id());
                     status = ps.executeUpdate();
@@ -95,6 +91,7 @@ public class BorrowDao {
                 borrow.setDueDate(result.getDate(8));
                 allBorrow.add(borrow);
             }
+            con.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -135,7 +132,7 @@ public class BorrowDao {
             Date return_date = new Date(millis);
 
 //          update return date in object
-            days_difference = daysDifference(borrow.getBorrow_Date(),return_date);
+            days_difference = daysDifference(borrow.getDueDate(),return_date);
 
 //          Get fine amount per day query
             ps = con.prepareStatement("SELECT * FROM Fine WHERE Group_Id = ( SELECT Group_Id FROM Student WHERE Student_Id = ?)");
@@ -149,24 +146,25 @@ public class BorrowDao {
                 fine_per_day = result.getInt(2);
             }
 //          Get number of days query
-            ps = con.prepareStatement("SELECT * FROM Group_Days WHERE Group_Id = ?");
-            ps.setInt(1,borrow.getGroup_Id());
-            result = ps.executeQuery();
-            int no_of_days = 0;
-            if(result.next()){
-                no_of_days = result.getInt(2);
-            }
+//            ps = con.prepareStatement("SELECT * FROM Group_Days WHERE Group_Id = ?");
+//            ps.setInt(1,borrow.getGroup_Id());
+//            result = ps.executeQuery();
+//            int no_of_days = 0;
+//            if(result.next()){
+//                no_of_days = result.getInt(2);
+//            }
 
 //          Calculate Fine
-            float fine_to_pay = 0;
-            if(days_difference > no_of_days){
-                fine_to_pay = (float) fine_per_day * (days_difference - no_of_days);
-            }
+//            float fine_to_pay = 0 ;
+//            if(days_difference > no_of_days){
+//                fine_to_pay = (float) fine_per_day * (days_difference - no_of_days);
+//            }
+            float fine_to_pay = (float) fine_per_day * days_difference ;
             borrow.setFine_Paid(fine_to_pay);
 
 //            Update DB and object with return date
             borrow.setReturn_Date(return_date);
-
+        con.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -188,6 +186,7 @@ public class BorrowDao {
                 status = ps.executeUpdate();
                 status = status & (BookDao.updateReturnedBook(borrow.getBook_Id()));
             }
+            con.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -214,22 +213,11 @@ public class BorrowDao {
                 borrow.setBorrow_Id(result.getInt(7));
                 allReturn.add(borrow);
             }
+            con.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return allReturn;
     }
 
-
-//  Get All borrow list that are delayed
-//    public static List<Borrow> getAllDelayedBorrows(){
-//        List<Borrow> allDelayedBorrow = new ArrayList<>();
-//        try{
-//            Connection con = getConnection();
-//            PreparedStatement ps = con.prepareStatement("SELECT ")
-//
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//    }
 }
