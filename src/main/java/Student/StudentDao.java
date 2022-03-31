@@ -101,4 +101,20 @@ public class StudentDao {
         }
         return no_days;
     }
+//   Function to delete student by batch
+    public static int deleteStudentByBatch(int batch){
+        int status = 0 ;
+        try{
+            Connection con = DBConnection.getConnection();
+            PreparedStatement ps = con.prepareStatement("DELETE FROM Student WHERE Batch = ?");
+            ps.setInt(1,batch);
+
+            status = ps.executeUpdate();
+            con.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return status;
+    }
 }

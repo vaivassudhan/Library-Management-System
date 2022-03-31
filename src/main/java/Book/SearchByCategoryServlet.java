@@ -1,10 +1,15 @@
 package Book;
 
 import Category.CategoryDao;
+import Utils.Util;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
 public class SearchByCategoryServlet extends HttpServlet {
@@ -15,12 +20,27 @@ public class SearchByCategoryServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int Category_Id = Integer.parseInt(request.getParameter("Category_Id"));
+        PrintWriter out = response.getWriter();
+
+//      Read Token From Response Header
+        String token = request.getHeader("Authorization").split(" ")[1];
+//      Auth Check
+        if(!Util.verifyAuth(token)){
+            out.write(Util.createErrorJson("UnAuthorized"));
+            response.setStatus(401);
+        }
+//      Handling json request
+        String jb = Util.jsonRequestHandler(request);
+        System.out.println(jb);
+        JsonObject jsonObject = new JsonParser().parse(jb).getAsJsonObject();
+
+        int Category_Id = jsonObject.get("Category_Id").getAsInt();
         List<Book> allBook= BookDao.searchByCategory(Category_Id);
-        String category_name = CategoryDao.getCategoryNameById(Integer.parseInt(request.getParameter("Category_Id")));
-        request.setAttribute("allBook",allBook);
-        request.setAttribute("Category_Name",category_name);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("category-books.jsp");
-        dispatcher.forward(request,response);
+        String bookJson = new Gson().toJson(allBook);
+        response.addHeader("Access-Control-Allow-Origin", "*");
+        response.setContentType("application/json");
+        out.write(bookJson);
+        out.flush();
+
     }
 }
