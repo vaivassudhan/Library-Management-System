@@ -1,5 +1,6 @@
 package Student;
 
+import Utils.Util;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
@@ -12,25 +13,24 @@ import java.util.List;
 public class ViewStudentServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//        if(request.getSession(false).getAttribute("Librarian_Id") == null){
-//            RequestDispatcher dispatcher = request.getRequestDispatcher("login");
-//            dispatcher.forward(request,response);
-//        }
+        PrintWriter out = response.getWriter();
+
+//      Read Token From Response Header
+        String token = request.getHeader("Authorization").split(" ")[1];
+//      Auth Check
+        if(!Util.verifyAuth(token)){
+            out.write(Util.createErrorJson("UnAuthorized"));
+            response.setStatus(401);
+        }
         List<Student> allStudent = StudentDao.getAllStudent();
         String studentJson = new Gson().toJson(allStudent);
-        PrintWriter out = response.getWriter();
         out.write(studentJson);
         out.flush();
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("message-type","error");
-        jsonObject.addProperty("message","Post method not available!");
-        response.setStatus(400);
         PrintWriter out = response.getWriter();
-        out.write(String.valueOf(jsonObject));
+        out.write(Util.createErrorJson("POST not available"));
     }
 }

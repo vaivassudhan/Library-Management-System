@@ -24,7 +24,7 @@ public class StudentDao {
             ps.setString(6,student.getAddress());
             ps.setInt(7,student.getBatch());
             status = ps.executeUpdate();
-
+            con.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }

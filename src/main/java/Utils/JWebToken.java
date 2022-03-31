@@ -18,10 +18,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-/**
- *
- * @author user
- */
+
 public class JWebToken {
 
     private static final String SECRET_KEY = "ZOHO_LMS@!";
@@ -89,19 +86,6 @@ public class JWebToken {
                 && signature.equals(hmacSha256(encodedHeader + "." + encode(payload), SECRET_KEY)); //signature matched
     }
 
-    public String getSubject() throws JSONException {
-        return payload.getString("sub");
-    }
-
-
-    public List<String> getAudience() throws JSONException {
-        JSONArray arr = payload.getJSONArray("aud");
-        List<String> list = new ArrayList<>();
-        for (int i = 0; i < arr.length(); i++) {
-            list.add(arr.getString(i));
-        }
-        return list;
-    }
     public String getId() throws JSONException {
         return payload.getString("Librarian_Id");
     }
