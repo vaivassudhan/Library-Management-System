@@ -40,18 +40,18 @@
         <filter-name>CorsFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>-->
-    <filter>
-        <filter-name>CorsFilter</filter-name>
-        <filter-class>org.apache.catalina.filters.CorsFilter</filter-class>
-        <init-param>
-            <param-name>cors.allowed.origins</param-name>
-            <param-value> http://localhost:4200, http://localhost:3000 </param-value>
-        </init-param>
-    </filter>
-    <filter-mapping>
-        <filter-name>CorsFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
+<!--    <filter>-->
+<!--        <filter-name>CorsFilter</filter-name>-->
+<!--        <filter-class>org.apache.catalina.filters.CorsFilter</filter-class>-->
+<!--        <init-param>-->
+<!--            <param-name>cors.allowed.origins</param-name>-->
+<!--            <param-value> http://localhost:4200, http://localhost:3000 </param-value>-->
+<!--        </init-param>-->
+<!--    </filter>-->
+<!--    <filter-mapping>-->
+<!--        <filter-name>CorsFilter</filter-name>-->
+<!--        <url-pattern>/*</url-pattern>-->
+<!--    </filter-mapping>-->
 <!--    <filter>-->
 <!--        <filter-name>CORSFilter</filter-name>-->
 <!--        <filter-class>CORSFilter</filter-class>-->
@@ -83,15 +83,6 @@
 
 
 <!--    Book servlets mapping-->
-    <servlet>
-        <servlet-name>BookFormServlet</servlet-name>
-        <servlet-class>Book.BookFormServlet</servlet-class>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>BookFormServlet</servlet-name>
-        <url-pattern>/book-form</url-pattern>
-    </servlet-mapping>
     <servlet>
         <servlet-name>AddBook</servlet-name>
         <servlet-class>Book.AddBookServlet</servlet-class>
@@ -134,7 +125,14 @@
         <servlet-name>SearchByAuthorServlet</servlet-name>
         <url-pattern>/search-by-author</url-pattern>
     </servlet-mapping>
-
+    <servlet>
+        <servlet-name>SearchByTitleServlet</servlet-name>
+        <servlet-class>Book.SearchByTitleServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SearchByTitleServlet</servlet-name>
+        <url-pattern>/search-by-title</url-pattern>
+    </servlet-mapping>
 <!--    Librarian Servlets -->
     
     <servlet>
@@ -144,14 +142,6 @@
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/login</url-pattern>
-    </servlet-mapping>
-    <servlet>
-        <servlet-name>LogoutServlet</servlet-name>
-        <servlet-class>Librarian.LogoutServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>LogoutServlet</servlet-name>
-        <url-pattern>/logout</url-pattern>
     </servlet-mapping>
 
     <servlet>

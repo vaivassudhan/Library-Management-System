@@ -4,6 +4,11 @@ public class Book {
     private int Book_Id, Nos_Available,Category_Id,Published_year;
     private String Book_Title, Author_Name;
     public String category_name;
+    private String ISBN;
+
+    public String getISBN() { return ISBN; }
+
+    public void setISBN(String ISBN) {this.ISBN = ISBN; }
 
     public String getCategory_name() {
         return category_name;
