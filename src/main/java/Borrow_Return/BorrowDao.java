@@ -159,7 +159,11 @@ public class BorrowDao {
 //            if(days_difference > no_of_days){
 //                fine_to_pay = (float) fine_per_day * (days_difference - no_of_days);
 //            }
-            float fine_to_pay = (float) fine_per_day * days_difference ;
+            float fine_to_pay = 0;
+            if(days_difference > 0 ){
+                fine_to_pay = (float) fine_per_day * days_difference ;
+            }
+
             borrow.setFine_Paid(fine_to_pay);
 
 //            Update DB and object with return date
