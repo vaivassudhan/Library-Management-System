@@ -19,7 +19,7 @@ public class AuthFilter implements Filter {
     }
 
     private static final String[] adminURILS = {
-            "/add-librarian", "/update-days", "/get-fine", "/update-fine"
+            "/add-librarian", "/update-days",  "/update-fine"
     };
 
 //  Function to check if the URL is admin only accessible url
@@ -62,11 +62,13 @@ public class AuthFilter implements Filter {
         }
         if(!checkHeader(httpRequest)){
             unAuthorized((HttpServletResponse) response);
+            return;
         }
         String token = httpRequest.getHeader("Authorization").split(" ")[1];
         if(isAdminURL(path)){
             if(Util.isAdmin(token)){
                 request.getRequestDispatcher(((HttpServletRequest) request).getServletPath()).forward(request, response);
+                return;
             }
             else{
                 unAuthorized((HttpServletResponse) response);
@@ -74,6 +76,7 @@ public class AuthFilter implements Filter {
         }
         if(Util.verifyAuth(token)){
             request.getRequestDispatcher(((HttpServletRequest) request).getServletPath()).forward(request, response);
+            return;
         }
         else{
             unAuthorized((HttpServletResponse) response);
