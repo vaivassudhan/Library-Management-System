@@ -54,7 +54,7 @@ public class LoginServlet extends HttpServlet {
                 e.printStackTrace();
             }
             response.setStatus(200);
-            jsonobject.addProperty("token",token);
+            jsonobject.addProperty("token",Util.encryptToken(token));
             jsonobject.addProperty("Librarian_Id",librarian.getLibrarian_Id());
             jsonobject.addProperty("Name",librarian.getName());
             jsonobject.addProperty("Role",librarian.getRole());

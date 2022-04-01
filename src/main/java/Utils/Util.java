@@ -11,6 +11,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class Util {
+    private final static String secretKey = "ZOHO_LMS_SecretKey!@#";
     public static String jsonRequestHandler(HttpServletRequest req){
         StringBuffer jb = new StringBuffer();
         String line = null;
@@ -26,7 +27,8 @@ public class Util {
         }
         return String.valueOf(jb);
     }
-    public static boolean verifyAuth(String token){
+    public static boolean verifyAuth(String enctoken){
+        String token = AES.decrypt(enctoken, secretKey);
         JWebToken incomingToken = null;
         try {
             incomingToken = new JWebToken(token);
@@ -40,7 +42,8 @@ public class Util {
         return false;
     }
 
-    public static boolean isAdmin(String token){
+    public static boolean isAdmin(String enctoken){
+        String token = AES.decrypt(enctoken, secretKey);
         JWebToken incomingToken = null;
         try {
             incomingToken = new JWebToken(token);
@@ -69,5 +72,10 @@ public class Util {
         jsonObject.addProperty("message",message);
 
         return String.valueOf(jsonObject);
+    }
+
+//   Function to encrypt token
+    public static String encryptToken(String token){
+        return AES.encrypt(token,secretKey);
     }
 }
