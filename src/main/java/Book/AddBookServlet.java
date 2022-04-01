@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.HttpURLConnection;
 import java.util.Calendar;
 import java.util.Objects;
 
@@ -20,7 +21,7 @@ public class AddBookServlet extends HttpServlet {
 //      Auth Check
         if(!Util.verifyAuth(token)){
             out.write(Util.createErrorJson("UnAuthorized"));
-            res.setStatus(401);
+            res.setStatus(HttpURLConnection.HTTP_UNAUTHORIZED);
         }
 
 //      Handling json request and converting to Java POJO
