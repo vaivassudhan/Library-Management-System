@@ -6,12 +6,13 @@ import com.google.gson.JsonObject;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Properties;
 
 public class Util {
-    private final static String secretKey = "ZOHO_LMS_SecretKey!@#";
     public static String jsonRequestHandler(HttpServletRequest req){
         StringBuffer jb = new StringBuffer();
         String line = null;
@@ -27,8 +28,11 @@ public class Util {
         }
         return String.valueOf(jb);
     }
-    public static boolean verifyAuth(String encrypted_token){
-        String token = AES.decrypt(encrypted_token, secretKey);
+    public static boolean verifyAuth(String encrypted_token) throws IOException {
+        Properties properties = new Properties();
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        properties.load(classLoader.getResourceAsStream("/secrets.properties"));
+        String token = AES.decrypt(encrypted_token, properties.getProperty("secretKey"));
         JWebToken incomingToken = null;
         try {
             incomingToken = new JWebToken(token);
@@ -42,8 +46,11 @@ public class Util {
         return false;
     }
 
-    public static boolean isAdmin(String encrypted_token){
-        String token = AES.decrypt(encrypted_token, secretKey);
+    public static boolean isAdmin(String encrypted_token) throws IOException {
+        Properties properties = new Properties();
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        properties.load(classLoader.getResourceAsStream("/secrets.properties"));
+        String token = AES.decrypt(encrypted_token, properties.getProperty("secretKey"));
         JWebToken incomingToken = null;
         try {
             incomingToken = new JWebToken(token);
@@ -75,7 +82,10 @@ public class Util {
     }
 
 //   Function to encrypt token
-    public static String encryptToken(String token){
-        return AES.encrypt(token,secretKey);
+    public static String encryptToken(String token) throws IOException {
+        Properties properties = new Properties();
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        properties.load(classLoader.getResourceAsStream("/secrets.properties"));
+        return AES.encrypt(token,properties.getProperty("secretKey"));
     }
 }
