@@ -27,13 +27,13 @@ public class Util {
         }
         return String.valueOf(jb);
     }
-    public static boolean verifyAuth(String enctoken){
-        String token = AES.decrypt(enctoken, secretKey);
+    public static boolean verifyAuth(String encrypted_token){
+        String token = AES.decrypt(encrypted_token, secretKey);
         JWebToken incomingToken = null;
         try {
             incomingToken = new JWebToken(token);
             int Role = Integer.parseInt(incomingToken.getRole());
-            if (Role == 1 || Role == 2) {
+            if (Role == Keys.ADMIN_ROLE || Role == Keys.LIBRARIAN_ROLE) {
                 return true;
             }
         } catch (NoSuchAlgorithmException e) {
@@ -42,13 +42,13 @@ public class Util {
         return false;
     }
 
-    public static boolean isAdmin(String enctoken){
-        String token = AES.decrypt(enctoken, secretKey);
+    public static boolean isAdmin(String encrypted_token){
+        String token = AES.decrypt(encrypted_token, secretKey);
         JWebToken incomingToken = null;
         try {
             incomingToken = new JWebToken(token);
             int Role = Integer.parseInt(incomingToken.getRole());
-            if (Role == 1) {
+            if (Role == Keys.ADMIN_ROLE) {
                 return true;
             }
         } catch (NoSuchAlgorithmException e) {
