@@ -15,15 +15,6 @@ import java.util.Objects;
 public class AddBookServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
         PrintWriter out = res.getWriter();
-
-//      Read Token From Response Header
-        String token = req.getHeader("Authorization").split(" ")[1];
-//      Auth Check
-        if(!Util.verifyAuth(token)){
-            out.write(Util.createErrorJson("UnAuthorized"));
-            res.setStatus(HttpURLConnection.HTTP_UNAUTHORIZED);
-        }
-
 //      Handling json request and converting to Java POJO
         String jb = Util.jsonRequestHandler(req);
         Gson gson = new Gson();
@@ -34,25 +25,29 @@ public class AddBookServlet extends HttpServlet {
         int curYear = Calendar.getInstance().get(Calendar.YEAR);
         if(book.getPublished_year()<=1800 || book.getPublished_year()>curYear){
             out.write(Util.createErrorJson("Year not valid"));
+            res.setStatus(HttpURLConnection.HTTP_BAD_REQUEST);
             return;
         }
         if(book.getNos_Available() <= 0 ){
             out.write(Util.createErrorJson("Stock cannot be less than 0"));
+            res.setStatus(HttpURLConnection.HTTP_BAD_REQUEST);
             return;
         }
         if(Objects.equals(book.getBook_Title(), "") || book.getBook_Title().length() < 3){
             out.write(Util.createErrorJson("Invalid Book Name"));
+            res.setStatus(HttpURLConnection.HTTP_BAD_REQUEST);
             return;
         }
         if(Objects.equals(book.getAuthor_Name(), "") || book.getAuthor_Name().length() < 3){
             out.write(Util.createErrorJson("Invalid Author Name"));
+            res.setStatus(HttpURLConnection.HTTP_BAD_REQUEST);
             return;
         }
 
         int status = BookDao.addBook(book);
 
         if(status > 0){
-            res.setStatus(200);
+            res.setStatus(HttpURLConnection.HTTP_OK);
             res.addHeader("Access-Control-Allow-Origin", "*");
             res.setContentType("application/json");
             res.setCharacterEncoding("UTF-8");
@@ -60,13 +55,13 @@ public class AddBookServlet extends HttpServlet {
             out.flush();
         }
         else{
-            res.sendError(500);
+            res.sendError(HttpURLConnection.HTTP_INTERNAL_ERROR);
         }
 
     }
     protected  void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
         PrintWriter out = res.getWriter();
-        res.setStatus(500);
+        res.sendError(HttpURLConnection.HTTP_INTERNAL_ERROR);
         out.write(Util.createErrorJson("Get method not available"));
 
     }

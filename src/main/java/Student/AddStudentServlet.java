@@ -25,14 +25,6 @@ public class AddStudentServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         PrintWriter out = response.getWriter();
-
-//      Read Token From Response Header
-        String token = request.getHeader("Authorization").split(" ")[1];
-//      Auth Check
-        if(!Util.verifyAuth(token)){
-            out.write(Util.createErrorJson("UnAuthorized"));
-            response.setStatus(401);
-        }
 //      Handling json request & Json to Java POJO
         String jb = Util.jsonRequestHandler(request);
         Gson gson = new Gson();

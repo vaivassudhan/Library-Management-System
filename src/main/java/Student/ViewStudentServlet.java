@@ -15,13 +15,6 @@ public class ViewStudentServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         PrintWriter out = response.getWriter();
 
-//      Read Token From Response Header
-        String token = request.getHeader("Authorization").split(" ")[1];
-//      Auth Check
-        if(!Util.verifyAuth(token)){
-            out.write(Util.createErrorJson("UnAuthorized"));
-            response.setStatus(401);
-        }
         List<Student> allStudent = StudentDao.getAllStudent();
         String studentJson = new Gson().toJson(allStudent);
         out.write(studentJson);
