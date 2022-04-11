@@ -1,14 +1,11 @@
 package Utils;
 
-import Book.Book;
-import com.google.gson.Gson;
+import Auth.AES;
 import com.google.gson.JsonObject;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Properties;
 

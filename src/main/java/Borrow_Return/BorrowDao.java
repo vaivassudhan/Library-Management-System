@@ -35,7 +35,7 @@ public class BorrowDao {
                 ps.setString(3, borrow.getIssued_By());
 //              Get current date
                 long millis=System.currentTimeMillis();
-                java.sql.Date cur_date=new java.sql.Date(millis);
+                Date cur_date=new Date(millis);
                 ps.setDate(4,cur_date);
 
 //              Get no of days
@@ -44,7 +44,7 @@ public class BorrowDao {
                 c.setTime(cur_date); // Using today's date
                 c.add(Calendar.DATE,no_of_days);
                 long added_millis = c.getTimeInMillis();
-                java.sql.Date due_date = new java.sql.Date(added_millis);
+                Date due_date = new Date(added_millis);
                 ps.setDate(5,due_date);
 
 //              Executing the query
