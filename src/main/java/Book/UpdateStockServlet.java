@@ -4,10 +4,13 @@ import Utils.Util;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import javax.servlet.*;
-import javax.servlet.http.*;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.HttpURLConnection;
 
 public class UpdateStockServlet extends HttpServlet {
     @Override
@@ -33,16 +36,21 @@ public class UpdateStockServlet extends HttpServlet {
 
 //      Check Edge cases
         if(Nos_Available < 0 ){
+            response.setStatus(HttpURLConnection.HTTP_BAD_REQUEST);
             out.write(Util.createErrorJson("Stock not valid"));
+            out.flush();
             return;
         }
 
         int status = BookDao.updateBookStock( Book_Id , Nos_Available );
         if(status != 0){
+            response.setStatus(HttpURLConnection.HTTP_OK);
             out.write(Util.successMessageJson("Stock updated successfully!"));
         }
         else{
+            response.setStatus(HttpURLConnection.HTTP_INTERNAL_ERROR);
             out.write(Util.createErrorJson("Some Error Occurred!"));
         }
+        out.flush();
     }
 }

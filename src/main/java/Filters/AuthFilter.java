@@ -1,4 +1,6 @@
-package Utils;
+package Filters;
+
+import Utils.Util;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -6,10 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
-import java.util.Collections;
 import java.util.Enumeration;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 public class AuthFilter implements Filter {
     public void init(FilterConfig config) throws ServletException {
@@ -56,6 +55,7 @@ public class AuthFilter implements Filter {
 
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         String path = httpRequest.getServletPath();
+        System.out.println(path+" in auth");
         if(path.equals("/login")){
             request.getRequestDispatcher(path).forward(request, response);
             return;
@@ -67,6 +67,7 @@ public class AuthFilter implements Filter {
         String token = httpRequest.getHeader("Authorization").split(" ")[1];
         if(isAdminURL(path)){
             if(Util.isAdmin(token)){
+                chain.doFilter(request, response);
                 request.getRequestDispatcher(((HttpServletRequest) request).getServletPath()).forward(request, response);
                 return;
             }
@@ -75,12 +76,16 @@ public class AuthFilter implements Filter {
             }
         }
         if(Util.verifyAuth(token)){
+            System.out.println("token verified");
+            chain.doFilter(request, response);
             request.getRequestDispatcher(((HttpServletRequest) request).getServletPath()).forward(request, response);
             return;
         }
         else{
             unAuthorized((HttpServletResponse) response);
         }
+
+        chain.doFilter(request, response);
 
     }
 

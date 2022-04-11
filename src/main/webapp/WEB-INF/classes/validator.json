@@ -1,0 +1,38 @@
+{
+  "/add-book": {
+    "Book_Title": {
+      "required": true,
+      "regex": "^[a-zA-Z0-9 ]*$"
+
+    },
+    "Author_Name": {
+      "required": true,
+      "regex":"^[a-zA-Z ]*$"
+    },
+    "Category_Id": {
+      "required": true,
+      "regex": "[0-9]+",
+      "min-length": 0,
+      "max-length": 5
+    },
+    "ISBN" : {
+      "required": true,
+      "regex": "[0-9]+"
+    },
+    "Published_year": {
+      "required": true,
+      "regex": "[0-9]+"
+    },
+    "Nos_Available": {
+      "required": true,
+      "regex": "[0-9]+"
+    }
+  },
+  "/add-category": {
+    "Category_Name": {
+      "required": true,
+      "regex": "[a-zA-Z ]*$"
+    }
+  }
+
+}

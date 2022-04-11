@@ -1,15 +1,16 @@
 package Borrow_Return;
 
-import Category.Category;
 import Utils.Util;
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import javax.servlet.*;
-import javax.servlet.http.*;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.HttpURLConnection;
 import java.util.Objects;
 
 public class AddBorrowServlet extends HttpServlet {
@@ -48,11 +49,14 @@ public class AddBorrowServlet extends HttpServlet {
 
         int borrow_id = BorrowDao.borrowBook(borrow);
         if(borrow_id == 0){
+            response.setStatus(HttpURLConnection.HTTP_INTERNAL_ERROR);
             out.write(Util.createErrorJson("Error Occurred"));
         }
         else{
+            response.setStatus(HttpURLConnection.HTTP_CREATED);
             out.write(Util.successMessageJson("Book Issued Successfully. Borrow ID is " + borrow_id));
         }
+        out.flush();
 
     }
 }

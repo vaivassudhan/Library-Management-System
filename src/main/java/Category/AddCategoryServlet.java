@@ -2,14 +2,14 @@ package Category;
 
 import Utils.Util;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
-import javax.servlet.*;
-import javax.servlet.http.*;
-import javax.servlet.annotation.*;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.HttpURLConnection;
 
 public class AddCategoryServlet extends HttpServlet {
     @Override
@@ -22,7 +22,7 @@ public class AddCategoryServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         PrintWriter out = response.getWriter();
-        String jb = Util.jsonRequestHandler(request);
+        String jb =(String) request.getAttribute("requestJson");
         Gson gson = new Gson();
         Category category = gson.fromJson(String.valueOf(jb), Category.class);
 
@@ -33,16 +33,18 @@ public class AddCategoryServlet extends HttpServlet {
 
         int status = CategoryDao.addCategory(category);
         if(status > 0){
-            response.setStatus(200);
+            response.setStatus(HttpURLConnection.HTTP_CREATED);
             response.addHeader("Access-Control-Allow-Origin", "*");
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
             out.write(Util.successMessageJson("Category added successfully!"));
+            out.flush();
 
         }
         else{
             out.write(Util.createErrorJson("Some error occurred"));
-            response.sendError(500);
+            response.sendError(HttpURLConnection.HTTP_INTERNAL_ERROR);
+            out.flush();
 
         }
     }

@@ -2,7 +2,10 @@ package Librarian;
 
 import DBConnection.DBConnection;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class LibrarianDao {
 
@@ -12,9 +15,10 @@ public class LibrarianDao {
         boolean status = false;
         PreparedStatement ps = null;
         try {
+            String hashedPassword = Auth.PasswordHash.encryptPassword(Password);
             ps = con.prepareStatement("SELECT Librarian_Id FROM Librarian WHERE Librarian_Id=? and Password=?");
             ps.setString(1,Lid);
-            ps.setString(2,Password);
+            ps.setString(2,hashedPassword);
             ResultSet result = ps.executeQuery();
             status = result.next();
             con.close();
@@ -51,9 +55,11 @@ public class LibrarianDao {
         Connection con = DBConnection.getConnection();
         int status = 0;
         try {
+            String hashedPassword = Auth.PasswordHash.encryptPassword(librarian.getLibrarian_Id());
+            librarian.setPassword(hashedPassword);
             PreparedStatement ps = con.prepareStatement("INSERT INTO Librarian(Librarian_Id, Password, Name, Gender, Role, Mobile ) VALUES(?,?,?,?,?,?)");
             ps.setString(1,librarian.getLibrarian_Id());
-            ps.setString(2,librarian.getLibrarian_Id());
+            ps.setString(2,librarian.getPassword());
             ps.setString(3,librarian.getName());
             ps.setString(4,librarian.getGender());
             ps.setInt(5,librarian.getRole());

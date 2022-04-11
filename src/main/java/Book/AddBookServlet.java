@@ -2,6 +2,7 @@ package Book;
 
 import Utils.Util;
 import com.google.gson.Gson;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -16,7 +17,7 @@ public class AddBookServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
         PrintWriter out = res.getWriter();
 //      Handling json request and converting to Java POJO
-        String jb = Util.jsonRequestHandler(req);
+        String jb = (String) req.getAttribute("requestJson");
         Gson gson = new Gson();
         Book book = gson.fromJson(String.valueOf(jb), Book.class);
 
@@ -24,8 +25,9 @@ public class AddBookServlet extends HttpServlet {
 //      Checking edge cases
         int curYear = Calendar.getInstance().get(Calendar.YEAR);
         if(book.getPublished_year()<=1800 || book.getPublished_year()>curYear){
-            out.write(Util.createErrorJson("Year not valid"));
             res.setStatus(HttpURLConnection.HTTP_BAD_REQUEST);
+            out.write(Util.createErrorJson("Year not valid"));
+            out.flush();
             return;
         }
         if(book.getNos_Available() <= 0 ){
@@ -47,7 +49,7 @@ public class AddBookServlet extends HttpServlet {
         int status = BookDao.addBook(book);
 
         if(status > 0){
-            res.setStatus(HttpURLConnection.HTTP_OK);
+            res.setStatus(HttpURLConnection.HTTP_CREATED);
             res.addHeader("Access-Control-Allow-Origin", "*");
             res.setContentType("application/json");
             res.setCharacterEncoding("UTF-8");

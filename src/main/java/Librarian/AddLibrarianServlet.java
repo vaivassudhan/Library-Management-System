@@ -2,12 +2,14 @@ package Librarian;
 
 import Utils.Util;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 
-import javax.servlet.*;
-import javax.servlet.http.*;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.HttpURLConnection;
 import java.util.Objects;
 
 public class AddLibrarianServlet extends HttpServlet {
@@ -27,20 +29,28 @@ public class AddLibrarianServlet extends HttpServlet {
         if(Objects.equals(librarian.getLibrarian_Id(), "")
                 || Objects.equals(librarian.getName(), "")
                 || Objects.equals(librarian.getMobile(),"")){
+            response.setStatus(HttpURLConnection.HTTP_BAD_REQUEST);
             out.write(Util.createErrorJson("Invalid Data"));
+            out.flush();
             return;
         }
         if(librarian.getMobile().length() < 10){
+            response.setStatus(HttpURLConnection.HTTP_BAD_REQUEST);
             out.write(Util.createErrorJson("Invalid Mobile"));
+            out.flush();
             return;
         }
 
         int status = LibrarianDao.addLibrarian(librarian);
         if(status != 0 ){
+            response.setStatus(HttpURLConnection.HTTP_OK);
             out.write(Util.successMessageJson("Librarian Added"));
+            out.flush();
         }
         else{
+            response.setStatus(HttpURLConnection.HTTP_BAD_REQUEST);
             out.write(Util.createErrorJson("Internal error occurred"));
+            out.flush();
         }
     }
 }

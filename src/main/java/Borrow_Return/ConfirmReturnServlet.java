@@ -1,15 +1,15 @@
 package Borrow_Return;
 
-import Book.Book;
 import Utils.Util;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
-import javax.servlet.*;
-import javax.servlet.http.*;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.HttpURLConnection;
 
 public class ConfirmReturnServlet extends HttpServlet {
     @Override
@@ -31,10 +31,13 @@ public class ConfirmReturnServlet extends HttpServlet {
 
         int status = BorrowDao.confirmReturn(borrow);
         if(status != 0){
+            response.setStatus(HttpURLConnection.HTTP_OK);
             out.write(Util.successMessageJson("Book Returned successfully!"));
         }
         else{
+            response.setStatus(HttpURLConnection.HTTP_INTERNAL_ERROR);
             out.write(Util.createErrorJson("Error Occurred "));
         }
+        out.flush();
     }
 }
