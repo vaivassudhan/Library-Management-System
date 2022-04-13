@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.HttpURLConnection;
 import java.util.List;
 
 public class ViewStudentServlet extends HttpServlet {
@@ -19,6 +20,7 @@ public class ViewStudentServlet extends HttpServlet {
         List<Student> allStudent = StudentDao.getAllStudent();
         String studentJson = new Gson().toJson(allStudent);
         out.write(studentJson);
+        response.setStatus(HttpURLConnection.HTTP_OK);
         out.flush();
     }
 
@@ -26,5 +28,6 @@ public class ViewStudentServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         PrintWriter out = response.getWriter();
         out.write(Util.createErrorJson("POST not available"));
+        out.flush();
     }
 }

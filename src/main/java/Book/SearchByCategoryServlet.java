@@ -25,7 +25,8 @@ public class SearchByCategoryServlet extends HttpServlet {
 
 
 //      Handling json request
-        String jb = Util.jsonRequestHandler(request);
+        String jb = (String) request.getAttribute("requestJson");
+        System.out.println(jb);
         JsonObject jsonObject = new JsonParser().parse(jb).getAsJsonObject();
 
         int Category_Id = jsonObject.get("Category_Id").getAsInt();

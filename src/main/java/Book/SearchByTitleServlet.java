@@ -25,7 +25,8 @@ public class SearchByTitleServlet extends HttpServlet {
 
 
 //      Handling json request
-        String jb = Util.jsonRequestHandler(request);
+        String jb = (String) request.getAttribute("requestJson");
+        System.out.println(jb);
         JsonObject jsonObject = new JsonParser().parse(jb).getAsJsonObject();
 
         String Book_Title = jsonObject.get("Book_Title").getAsString();

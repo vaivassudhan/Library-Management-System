@@ -54,7 +54,6 @@ public class InputValidationFilter implements Filter {
     }
 
     public static void validateData(JSONObject validatorObject, JSONObject requestObject){
-//        System.out.println(requestObject);
         Iterator<String> keys = requestObject.keys();
         while(keys.hasNext()) {
             String key = keys.next();
@@ -78,6 +77,9 @@ public class InputValidationFilter implements Filter {
         String path = httpRequest.getServletPath();
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         JSONObject jsonSchema = new JSONObject(new JSONTokener(Objects.requireNonNull(classLoader.getResourceAsStream("/validator.json"))));
+
+        System.out.println(path + " : " + jsonSchema.has(path));
+
         if(!jsonSchema.has(path)){
             request.getRequestDispatcher(((HttpServletRequest) request).getServletPath()).forward(request, response);
         }
@@ -86,9 +88,7 @@ public class InputValidationFilter implements Filter {
         JSONObject jsonObject = new JSONObject(jb);
 
         validateData(jsonSchema,jsonObject);
-        System.out.println("TEST " + errors.size());
         if(errors.size() > 0 ){
-            System.out.println("HELLO ERROR FOUND");
             PrintWriter out = response.getWriter();
             JsonObject errorsJson = new JsonObject();
             JSONArray errorJsonArray = new JSONArray(errors.toArray());
@@ -104,7 +104,6 @@ public class InputValidationFilter implements Filter {
             return;
         }
         if(errors.size() == 0){
-            System.out.println("NO Error");
             request.setAttribute("requestJson",jb);
 //            chain.doFilter(httpRequest,response);
             request.getRequestDispatcher(((HttpServletRequest) request).getServletPath()).forward(request, response);

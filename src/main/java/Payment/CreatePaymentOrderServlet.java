@@ -1,6 +1,7 @@
 package Payment;
 
 import Borrow_Return.Borrow;
+import Utils.Keys;
 import Utils.Util;
 import com.google.gson.Gson;
 import com.razorpay.Order;
@@ -23,21 +24,36 @@ public class CreatePaymentOrderServlet extends HttpServlet {
             String jb = Util.jsonRequestHandler(request);
             System.out.println(jb);
             Gson gson = new Gson();
-            //      Json to Java POJO
             Borrow borrow = gson.fromJson(String.valueOf(jb), Borrow.class);
 
-            RazorpayClient razorpayClient = new RazorpayClient("rzp_test_IqhGeEi5hICFZg","xftTeCetY2Z8YdVOuFuTjUvC");
+            PrintWriter out = response.getWriter();
+
+            RazorpayClient razorpayClient = new RazorpayClient(PaymentUtils.getRazorKey(),PaymentUtils.getRazorSecret());
             JSONObject options = new JSONObject();
             options.put("amount", borrow.getFine_Paid()*100);
-            options.put("currency", "INR");
-            options.put("receipt", "txn_"+borrow.getBorrow_Id()+"1");
+            options.put("currency", PaymentKeys.INR_CURRENCY);
+            options.put("receipt", PaymentKeys.RECEIPT_PREFIX +borrow.getBorrow_Id());
             Order order = razorpayClient.Orders.create(options);
-            PrintWriter out = response.getWriter();
-            response.addHeader("Access-Control-Allow-Origin", "*");
-            response.setContentType("application/json");
-            response.setStatus(HttpURLConnection.HTTP_OK);
-            out.print(order);
-            out.flush();
+
+            Payment paymentDetails = new Payment();
+            paymentDetails.setBorrow_Id(borrow.getBorrow_Id());
+            paymentDetails.setStudent_Id(borrow.getStudent_Id());
+            paymentDetails.setOrder_id(order.get("id").toString());
+            paymentDetails.setAmount(borrow.getFine_Paid());
+            paymentDetails.setStatus(Keys.PAYMENT_CREATED);
+            int status = PaymentDao.addPaymentDetails(paymentDetails);
+            if(status == 0){
+                response.setStatus(HttpURLConnection.HTTP_INTERNAL_ERROR);
+                out.println("Payment Details not added");
+                out.flush();
+            }
+            else {
+                response.addHeader("Access-Control-Allow-Origin", "*");
+                response.setContentType("application/json");
+                response.setStatus(HttpURLConnection.HTTP_OK);
+                out.print(order);
+                out.flush();
+            }
 
         } catch (RazorpayException e) {
             e.printStackTrace();

@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.HttpURLConnection;
 
 public class AddCategoryServlet extends HttpServlet {
     @Override
@@ -33,18 +32,16 @@ public class AddCategoryServlet extends HttpServlet {
 
         int status = CategoryDao.addCategory(category);
         if(status > 0){
-            response.setStatus(HttpURLConnection.HTTP_CREATED);
+            response.setStatus(200);
             response.addHeader("Access-Control-Allow-Origin", "*");
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
             out.write(Util.successMessageJson("Category added successfully!"));
-            out.flush();
 
         }
         else{
             out.write(Util.createErrorJson("Some error occurred"));
-            response.sendError(HttpURLConnection.HTTP_INTERNAL_ERROR);
-            out.flush();
+            response.sendError(500);
 
         }
     }

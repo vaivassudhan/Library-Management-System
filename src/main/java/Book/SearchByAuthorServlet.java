@@ -24,7 +24,7 @@ public class SearchByAuthorServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
 
 //      Handling json request
-        String jb = Util.jsonRequestHandler(request);
+        String jb = (String) request.getAttribute("requestJson");
         JsonObject jsonObject = new JsonParser().parse(jb).getAsJsonObject();
 
         String Author_Name = jsonObject.get("Author_Name").getAsString();

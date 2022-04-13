@@ -10,11 +10,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.HttpURLConnection;
 
 public class DeleteStudentBatchServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        response.setStatus(HttpURLConnection.HTTP_BAD_METHOD);
+        response.getWriter().write(Util.createErrorJson("Method not allowed"));
+        response.getWriter().flush();
     }
 
     @Override
@@ -29,10 +32,12 @@ public class DeleteStudentBatchServlet extends HttpServlet {
         int status = StudentDao.deleteStudentByBatch(batch);
         if(status != 0 ){
             out.write(Util.successMessageJson("Deleted successfully"));
-            response.setStatus(200);
+            response.setStatus(HttpURLConnection.HTTP_OK);
         }
         else{
-            out.write(Util.createErrorJson("Internal server error"));
+            out.write(Util.createErrorJson("Error occurred. Please check the batch number"));
+            response.setStatus(HttpURLConnection.HTTP_BAD_REQUEST);
         }
+        out.flush();
     }
 }

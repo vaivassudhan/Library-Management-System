@@ -21,10 +21,10 @@
     <url-pattern>/*</url-pattern>
 </filter-mapping>
 
-<!--<filter-mapping>-->
-<!--    <filter-name>InputValidationFilter</filter-name>-->
-<!--    <url-pattern>/*</url-pattern>-->
-<!--</filter-mapping>-->
+<filter-mapping>
+    <filter-name>InputValidationFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+</filter-mapping>
 
 <!--Category Servlets Mapping -->
 <!--    Add Category Mapping -->
@@ -267,4 +267,23 @@
         <servlet-name>CreatePaymentOrder</servlet-name>
         <url-pattern>/create-payment-order</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ValidatePaymentServlet</servlet-name>
+        <servlet-class>Payment.ValidatePaymentServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ValidatePaymentServlet</servlet-name>
+        <url-pattern>/validate-payment</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>CancelledPaymentServlet</servlet-name>
+        <servlet-class>Payment.CancelledPaymentServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CancelledPaymentServlet</servlet-name>
+        <url-pattern>/cancel-payment</url-pattern>
+    </servlet-mapping>
+
 </web-app>

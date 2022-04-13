@@ -179,17 +179,18 @@ public class BorrowDao {
         int status = 0 ;
         try{
             Connection con = DBConnection.getConnection();
-            PreparedStatement ps = con.prepareStatement("UPDATE Borrow SET Return_Date = ?  WHERE Borrow_Id = ?");
+            PreparedStatement ps = con.prepareStatement("UPDATE Borrow SET Return_Date = ?, Fine_Paid = ?  WHERE Borrow_Id = ?");
             ps.setDate(1,borrow.getReturn_Date());
-            ps.setInt(2,borrow.getBorrow_Id());
+            ps.setFloat(2,borrow.getFine_Paid());
+            ps.setInt(3,borrow.getBorrow_Id());
             status = ps.executeUpdate();
-            if(status != 0){
-                ps = con.prepareStatement("UPDATE Borrow SET Fine_Paid = ? WHERE Borrow_Id = ?");
-                ps.setFloat(1,borrow.getFine_Paid());
-                ps.setInt(2,borrow.getBorrow_Id());
-                status = ps.executeUpdate();
-                status = status & (BookDao.updateReturnedBook(borrow.getBook_Id()));
-            }
+//            if(status != 0){
+//                ps = con.prepareStatement("UPDATE Borrow SET Fine_Paid = ? WHERE Borrow_Id = ?");
+//                ps.setFloat(1,borrow.getFine_Paid());
+//                ps.setInt(2,borrow.getBorrow_Id());
+//                status = ps.executeUpdate();
+//                status = status & (BookDao.updateReturnedBook(borrow.getBook_Id()));
+//            }
             con.close();
         } catch (SQLException e) {
             e.printStackTrace();
