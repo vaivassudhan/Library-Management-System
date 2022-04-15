@@ -55,7 +55,6 @@ public class AuthFilter implements Filter {
 
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         String path = httpRequest.getServletPath();
-        System.out.println(path+" in auth");
         if(path.equals("/login")){
             request.getRequestDispatcher(path).forward(request, response);
             return;
@@ -76,7 +75,6 @@ public class AuthFilter implements Filter {
             }
         }
         if(Util.verifyAuth(token)){
-            System.out.println("token verified");
             chain.doFilter(request, response);
             request.getRequestDispatcher(((HttpServletRequest) request).getServletPath()).forward(request, response);
             return;

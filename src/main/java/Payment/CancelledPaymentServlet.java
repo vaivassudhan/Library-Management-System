@@ -14,7 +14,7 @@ import java.net.HttpURLConnection;
 
 public class CancelledPaymentServlet extends HttpServlet {
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String jb = Util.jsonRequestHandler(request);
         JsonObject jsonObject = new JsonParser().parse(jb).getAsJsonObject();
         PrintWriter out = response.getWriter();

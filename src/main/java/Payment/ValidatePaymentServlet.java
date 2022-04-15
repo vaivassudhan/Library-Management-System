@@ -50,7 +50,7 @@ public class ValidatePaymentServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         if (Objects.equals(generated_signature, razorpay_signature)) {
             System.out.println("PAYMENT SUCCESSFUL");
-            int status = PaymentDao.updatePaymentDetails(Keys.PAYMENT_AUTHORIZED,razorpay_payment_id,borrow_id);
+            int status = PaymentDao.updatePaymentDetails(Keys.PAYMENT_SUCCESS,razorpay_payment_id,borrow_id);
             if(status != 0) {
                 try {
                     int captured = PaymentUtils.capturePayment(amount, borrow_id);
@@ -67,7 +67,7 @@ public class ValidatePaymentServlet extends HttpServlet {
         else{
             System.out.println("PAYMENT FAILED");
             PaymentDao.updatePaymentStatus(Keys.PAYMENT_FAILED,borrow_id);
-            out.print(Util.createErrorJson("Payment Successful"));
+            out.print(Util.createErrorJson("Payment Failed"));
             out.flush();
         }
 
