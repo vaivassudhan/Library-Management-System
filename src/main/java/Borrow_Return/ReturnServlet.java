@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.HttpURLConnection;
 
 public class ReturnServlet extends HttpServlet {
     @Override
@@ -45,6 +46,7 @@ public class ReturnServlet extends HttpServlet {
         response.addHeader("Access-Control-Allow-Origin", "*");
         response.setContentType("application/json");
         out.print(borrowJson);
+        response.setStatus(HttpURLConnection.HTTP_OK);
         out.flush();
 
     }

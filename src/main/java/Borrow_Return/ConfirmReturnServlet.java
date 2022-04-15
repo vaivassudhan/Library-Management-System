@@ -32,11 +32,13 @@ public class ConfirmReturnServlet extends HttpServlet {
         int status = BorrowDao.confirmReturn(borrow);
         if(status != 0){
             response.setStatus(HttpURLConnection.HTTP_OK);
-            out.write(Util.successMessageJson("Book Returned successfully!"));
+            out.print(Util.successMessageJson("Book Returned successfully!"));
+            out.flush();
         }
         else{
             response.setStatus(HttpURLConnection.HTTP_INTERNAL_ERROR);
-            out.write(Util.createErrorJson("Error Occurred "));
+            out.print(Util.createErrorJson("Error Occurred "));
+            out.flush();
         }
         out.flush();
     }

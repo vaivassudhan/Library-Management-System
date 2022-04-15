@@ -8,6 +8,7 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.HttpURLConnection;
 
 public class UpdateFineServlet extends HttpServlet {
     @Override
@@ -20,7 +21,7 @@ public class UpdateFineServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         PrintWriter out = response.getWriter();
 //      Handling json request
-        String jb = Util.jsonRequestHandler(request);
+        String jb = (String) request.getAttribute("requestJson");
 
         JsonObject jsonObject = new JsonParser().parse(jb).getAsJsonObject();
 
@@ -31,10 +32,13 @@ public class UpdateFineServlet extends HttpServlet {
         int status = FineDao.updateFine(Group_Id,Fine_per_day);
         if(status != 0 ){
             out.write(Util.successMessageJson("Fine Updated Successfully!"));
+            response.setStatus(HttpURLConnection.HTTP_OK);
 
         }
         else{
             out.write(Util.createErrorJson("Some error occurred"));
+            response.setStatus(HttpURLConnection.HTTP_INTERNAL_ERROR);
         }
+        out.flush();
     }
 }

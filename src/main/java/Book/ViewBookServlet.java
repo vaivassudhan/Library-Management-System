@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.HttpURLConnection;
 import java.util.List;
 
 public class ViewBookServlet extends HttpServlet {
@@ -19,6 +20,7 @@ public class ViewBookServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         response.addHeader("Access-Control-Allow-Origin", "*");
         response.setContentType("application/json");
+        response.setStatus(HttpURLConnection.HTTP_OK);
         out.print(bookJson);
         out.flush();
     }
@@ -27,5 +29,7 @@ public class ViewBookServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         PrintWriter out = response.getWriter();
         out.write(Util.createErrorJson("POST not available"));
+        response.setStatus(HttpURLConnection.HTTP_INTERNAL_ERROR);
+        out.flush();
     }
 }

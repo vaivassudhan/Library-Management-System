@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.HttpURLConnection;
 import java.util.List;
 
 public class SearchByAuthorServlet extends HttpServlet {
@@ -33,6 +34,7 @@ public class SearchByAuthorServlet extends HttpServlet {
         response.addHeader("Access-Control-Allow-Origin", "*");
         response.setContentType("application/json");
         out.print(bookJson);
+        response.setStatus(HttpURLConnection.HTTP_OK);
         out.flush();
     }
 }

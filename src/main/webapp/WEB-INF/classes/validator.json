@@ -2,12 +2,12 @@
   "/add-book": {
     "Book_Title": {
       "required": true,
-      "regex": "^[a-zA-Z0-9 ]*$"
+      "regex": "^[a-zA-Z0-9.' ]*$"
 
     },
     "Author_Name": {
       "required": true,
-      "regex":"^[a-zA-Z ]*$"
+      "regex":"^[a-zA-Z.' ]*$"
     },
     "Category_Id": {
       "required": true,
@@ -32,6 +32,64 @@
     "Category_Name": {
       "required": true,
       "regex": "[a-zA-Z ]*$"
+    }
+  },
+  "/search-by-author": {
+    "Author_Name": {
+      "required": true,
+      "regex": "[a-zA-Z ]*$"
+    }
+  },
+  "/search-by-category": {
+    "Category_Id": {
+      "required": true,
+      "regex": "[0-9]+"
+    }
+  },
+  "/search-by-title": {
+    "Book_Title": {
+      "required": true,
+      "regex": "[a-zA-Z0-9 ]*$"
+    }
+  },
+  "/add-student": {
+    "Student_Name": {
+      "required": true,
+      "regex": "[a-zA-Z ]*$"
+    },
+    "Mobile": {
+      "required": true,
+      "regex": "[0-9]+"
+    },
+    "Email": {
+      "required": true,
+      "regex": "[a-z0-9]+@[a-z]+\\.[a-z]{2,3}"
+    },
+    "Gender": {
+      "required": true,
+      "regex": "^Male$|^Female"
+    },
+    "Group_id": {
+      "required": true,
+      "regex": "[0-9]+"
+    },
+    "Batch": {
+      "required": true,
+      "regex": "[0-9]+"
+    },
+    "Address": {
+      "required": false,
+      "regex": "[a-zA-Z0-9.' ]*$"
+    }
+  },
+  "/update-fine": {
+    "Fine_Per_Day": {
+      "required": true,
+      "regex": "[0-9]+"
+    },
+    "Group_Id": {
+      "required": true,
+      "regex": "[0-9]+"
     }
   }
 

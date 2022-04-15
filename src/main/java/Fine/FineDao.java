@@ -35,7 +35,7 @@ public class FineDao {
         int status = 0 ;
         try{
             Connection con = DBConnection.getConnection();
-            PreparedStatement ps = con.prepareStatement("UPDATE FINE SET Fine_Per_Day = ? WHERE Group_Id = ?");
+            PreparedStatement ps = con.prepareStatement("UPDATE Fine SET Fine_Per_Day = ? WHERE Group_Id = ?");
             ps.setFloat(1,fine_amount);
             ps.setInt(2,group_id);
             status = ps.executeUpdate();

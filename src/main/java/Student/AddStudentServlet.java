@@ -26,7 +26,7 @@ public class AddStudentServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         PrintWriter out = response.getWriter();
 //      Handling json request & Json to Java POJO
-        String jb = Util.jsonRequestHandler(request);
+        String jb = (String) request.getAttribute("requestJson");
         Gson gson = new Gson();
         Student student = gson.fromJson(String.valueOf(jb), Student.class);
 
