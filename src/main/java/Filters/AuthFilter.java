@@ -65,7 +65,7 @@ public class AuthFilter implements Filter {
             request.getRequestDispatcher(path).forward(request, response);
             return;
         }
-        if(path.equals("/capture-webhook")){
+        if(path.equals("/capture-webhook") || path.equals("/stripe-webhook")){
             request.getRequestDispatcher(path).forward(request, response);
             return;
 //            if(checkRazorpayHeader(httpRequest)) {

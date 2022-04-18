@@ -304,4 +304,22 @@
         <servlet-name>CapturedWebhook</servlet-name>
         <url-pattern>/capture-webhook</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>StripePayment</servlet-name>
+        <servlet-class>StripePayment.StripePaymentServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>StripePayment</servlet-name>
+        <url-pattern>/stripe-payment</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>StripeValidate</servlet-name>
+        <servlet-class>StripePayment.StripeValidatePaymentServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>StripeValidate</servlet-name>
+        <url-pattern>/stripe-webhook</url-pattern>
+    </servlet-mapping>
 </web-app>

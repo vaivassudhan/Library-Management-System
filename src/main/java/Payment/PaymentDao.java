@@ -21,6 +21,7 @@ public class PaymentDao {
             ps.setString(3,paymentDetails.getOrder_id());
             ps.setDouble(4,paymentDetails.getAmount());
             status = ps.executeUpdate();
+            con.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -40,7 +41,7 @@ public class PaymentDao {
             if(result.next()){
                 order_id = result.getString(1);
             }
-            System.out.println(order_id);
+            con.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -59,6 +60,7 @@ public class PaymentDao {
             if(result.next()){
                 status = true;
             }
+            con.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -75,6 +77,7 @@ public class PaymentDao {
             ps.setString(1,paymentStatus);
             ps.setInt(2,borrow_id);
             status = ps.executeUpdate();
+            con.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -95,6 +98,8 @@ public class PaymentDao {
             ps.setString(2, razorpay_payment_id);
             ps.setInt(3, borrow_id);
             status = ps.executeUpdate();
+
+            con.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -114,6 +119,7 @@ public class PaymentDao {
             if(result.next()){
                 payment_id = result.getString(1);
             }
+            con.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -139,6 +145,7 @@ public class PaymentDao {
                 ps.setInt(2,amount);
                 ps.setString(3,payment_status);
             }
+            con.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -158,6 +165,7 @@ public class PaymentDao {
             if(result.next()){
                 borrow_id = result.getInt(1);
             }
+            con.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
