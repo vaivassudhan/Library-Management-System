@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.util.Objects;
-
+// Servlet to check if the payment is successful or not. This also verifies the amount paid by the user.
 public class ValidatePaymentServlet extends HttpServlet {
     public static String hmac_sha256(String key, String data) throws Exception {
         Mac sha256_HMAC = Mac.getInstance("HmacSHA256");
@@ -50,7 +50,7 @@ public class ValidatePaymentServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         if (Objects.equals(generated_signature, razorpay_signature)) {
             System.out.println("PAYMENT SUCCESSFUL");
-            int status = PaymentDao.updatePaymentDetails(Keys.PAYMENT_SUCCESS,razorpay_payment_id,borrow_id);
+            int status = PaymentDao.updatePaymentDetails(Keys.PAYMENT_CAPTURED,razorpay_payment_id,borrow_id);
             if(status != 0) {
                 try {
                     int captured = PaymentUtils.capturePayment(amount, borrow_id);

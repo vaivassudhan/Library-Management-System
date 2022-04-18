@@ -50,6 +50,12 @@ public class AuthFilter implements Filter {
         }
         return false;
     }
+//  function to check razorpay headers
+    private boolean checkRazorpayHeader(HttpServletRequest request){
+        System.out.println(request.getHeader("user-agent"));
+        return (request.getHeader("x-razorpay-event-id") != null && request.getHeader("user-agent").equals("Razorpay-Webhook/v1"));
+    }
+
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws ServletException, IOException {
 
@@ -58,6 +64,15 @@ public class AuthFilter implements Filter {
         if(path.equals("/login")){
             request.getRequestDispatcher(path).forward(request, response);
             return;
+        }
+        if(path.equals("/capture-webhook")){
+            request.getRequestDispatcher(path).forward(request, response);
+            return;
+//            if(checkRazorpayHeader(httpRequest)) {
+//                request.getRequestDispatcher(path).forward(request, response);
+//                return;
+//            }
+
         }
         if(!checkHeader(httpRequest)){
             unAuthorized((HttpServletResponse) response);

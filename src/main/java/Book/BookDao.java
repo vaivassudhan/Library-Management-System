@@ -219,4 +219,33 @@ public class BookDao {
 
     }
 
+
+//   get all books by pagination
+    public static List<Book> getBooksByPage(int pageNo, int pageSize){
+        Connection con = null;
+        List<Book> allBooks = new ArrayList<Book>();
+        try{
+            con = DBConnection.getConnection();
+            PreparedStatement ps = con.prepareStatement("SELECT b.Book_Id,b.Book_Title,b.Author_Name,b.Category_Id,b.Nos_Available, b.Published_Year,c.Category_Name,b.ISBN FROM Book b JOIN Category c ON b.Category_Id = c.Category_Id LIMIT ?,?");
+            ps.setInt(1,(pageNo-1)*pageSize);
+            ps.setInt(2,pageSize);
+            ResultSet result = ps.executeQuery();
+            while(result.next()){
+                Book book = new Book();
+                book.setBook_Id(result.getInt(1));
+                book.setBook_Title(result.getString(2));
+                book.setAuthor_Name(result.getString(3));
+                book.setCategory_Id(result.getInt(4));
+                book.setNos_Available(result.getInt(5));
+                book.setPublished_year(result.getInt(6));
+                book.category_name = result.getString(7);
+                book.setISBN(result.getString(8));
+                allBooks.add(book);
+            }
+            con.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return allBooks;
+    }
 }

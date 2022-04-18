@@ -97,6 +97,16 @@
         <servlet-name>SearchByTitleServlet</servlet-name>
         <url-pattern>/search-by-title</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>GetBookByPageServlet</servlet-name>
+        <servlet-class>Book.GetBookByPageServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GetBookByPageServlet</servlet-name>
+        <url-pattern>/get-book-by-page</url-pattern>
+    </servlet-mapping>
+
 <!--    Librarian Servlets -->
     
     <servlet>
@@ -286,4 +296,12 @@
         <url-pattern>/cancel-payment</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>CapturedWebhook</servlet-name>
+        <servlet-class>Payment.CapturedWebhookHandler</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CapturedWebhook</servlet-name>
+        <url-pattern>/capture-webhook</url-pattern>
+    </servlet-mapping>
 </web-app>

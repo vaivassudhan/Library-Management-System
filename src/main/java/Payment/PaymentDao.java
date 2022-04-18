@@ -47,6 +47,23 @@ public class PaymentDao {
         return order_id;
     }
 
+//  Function to check if the order already recorded
+    public static boolean checkRazorpayId(String razorpay_payment_id){
+        Connection con = null;
+        boolean status = false;
+        try{
+            con = DBConnection.getConnection();
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM Payment WHERE razorpay_payment_id = ?");
+            ps.setString(1,razorpay_payment_id);
+            ResultSet result = ps.executeQuery();
+            if(result.next()){
+                status = true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return status;
+    }
 
 // Function to update the payment status in DB
     public static int updatePaymentStatus(String paymentStatus, int borrow_id){
@@ -66,6 +83,9 @@ public class PaymentDao {
 
 // Function to update the payment details in DB
     public static int updatePaymentDetails(String paymentStatus,String razorpay_payment_id, int borrow_id) {
+        if(checkRazorpayId(razorpay_payment_id)){
+            return 1;
+        }
         Connection con = null;
         int status = 0;
         try {
@@ -98,5 +118,49 @@ public class PaymentDao {
             e.printStackTrace();
         }
         return payment_id;
+    }
+
+    public static int capturedWebhookHandler(String razorpay_payment_Id, String order_id, int amount, String payment_status){
+        int status = 0 ;
+        Connection con = null;
+        try{
+            con = DBConnection.getConnection();
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM Payment WHERE razorpay_payment_id = ? AND order_id = ?");
+            ps.setString(1,razorpay_payment_Id);
+            ps.setString(2,order_id);
+            ResultSet result = ps.executeQuery();
+            if(result.next()){
+                status = 1;
+                return status;
+            }
+            else{
+                ps = con.prepareStatement("UPDATE Payment SET razorpay_payment_id = ?, amount = ?, status = ? WHERE order_id = ?");
+                ps.setString(1,razorpay_payment_Id);
+                ps.setInt(2,amount);
+                ps.setString(3,payment_status);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return status;
+    }
+
+//  function to get borrow id by order id
+    public static int getBorrowId(String order_id){
+        Connection con = null;
+        int borrow_id = 0;
+        try{
+            con = DBConnection.getConnection();
+            PreparedStatement ps = con.prepareStatement("SELECT Borrow_Id FROM Payment WHERE order_id = ?");
+            ps.setString(1,order_id);
+            ResultSet result = ps.executeQuery();
+            if(result.next()){
+                borrow_id = result.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return borrow_id;
     }
 }

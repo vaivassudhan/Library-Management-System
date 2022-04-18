@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.HttpURLConnection;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
@@ -53,7 +54,7 @@ public class LoginServlet extends HttpServlet {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            response.setStatus(200);
+            response.setStatus(HttpURLConnection.HTTP_OK);
             jsonobject.addProperty("token",Util.encryptToken(token));
             jsonobject.addProperty("Librarian_Id",librarian.getLibrarian_Id());
             jsonobject.addProperty("Name",librarian.getName());
@@ -62,6 +63,7 @@ public class LoginServlet extends HttpServlet {
             out.flush();
         }
         else{
+            response.setStatus(HttpURLConnection.HTTP_UNAUTHORIZED);
             out.write(Util.createErrorJson("Invalid Librarian ID or Password"));
             out.flush();
         }

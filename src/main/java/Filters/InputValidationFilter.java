@@ -81,33 +81,35 @@ public class InputValidationFilter implements Filter {
         System.out.println(path + " : " + jsonSchema.has(path));
 
         if(!jsonSchema.has(path)){
+            System.out.println("Redirected");
             request.getRequestDispatcher(((HttpServletRequest) request).getServletPath()).forward(request, response);
         }
-        jsonSchema = (JSONObject) jsonSchema.get(path);
-        String jb = Util.jsonRequestHandler(httpRequest);
-        JSONObject jsonObject = new JSONObject(jb);
+        else {
+            jsonSchema = (JSONObject) jsonSchema.get(path);
+            String jb = Util.jsonRequestHandler(httpRequest);
+            JSONObject jsonObject = new JSONObject(jb);
 
-        validateData(jsonSchema,jsonObject);
-        if(errors.size() > 0 ){
-            PrintWriter out = response.getWriter();
-            JsonObject errorsJson = new JsonObject();
-            JSONArray errorJsonArray = new JSONArray(errors.toArray());
-            errorsJson.addProperty("message", String.valueOf(errorJsonArray));
-            out.write(String.valueOf(errorsJson));
-            HttpServletResponse httpResponse = (HttpServletResponse) response;
-            httpResponse.setStatus(HttpURLConnection.HTTP_BAD_REQUEST);
-            request.getRequestDispatcher("/error");
-            httpResponse.setContentType("application/json");
+            validateData(jsonSchema, jsonObject);
+            if (errors.size() > 0) {
+                PrintWriter out = response.getWriter();
+                JsonObject errorsJson = new JsonObject();
+                JSONArray errorJsonArray = new JSONArray(errors.toArray());
+                errorsJson.addProperty("message", String.valueOf(errorJsonArray));
+                out.write(String.valueOf(errorsJson));
+                HttpServletResponse httpResponse = (HttpServletResponse) response;
+                httpResponse.setStatus(HttpURLConnection.HTTP_BAD_REQUEST);
+                request.getRequestDispatcher("/error");
+                httpResponse.setContentType("application/json");
 
-            out.flush();
+                out.flush();
 
-            return;
-        }
-        if(errors.size() == 0){
+                return;
+            }
             request.setAttribute("requestJson",jb);
 //            chain.doFilter(httpRequest,response);
             request.getRequestDispatcher(((HttpServletRequest) request).getServletPath()).forward(request, response);
         }
+
 
 
 
